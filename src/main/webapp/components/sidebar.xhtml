@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+   <aside class="sidebar">
+      <div class="sidebar-content">
+         <ul class="sidebar-nav">
+            <li class="sidebar-item #{view.viewId == '/pages/dashboard.xhtml' ? 'active' : ''}">
+               <h:link outcome="/pages/dashboard" value="Dashboard" styleClass="nav-link">
+                  <i class="pi pi-home"></i>
+               </h:link>
+            </li>
+            <li class="sidebar-item #{view.viewId == '/pages/candidatos/candidatos.xhtml' ? 'active' : ''}">
+               <h:link outcome="candidatos" value="Candidatos" styleClass="nav-link">
+                  <i class="pi pi-users"></i>
+               </h:link>
+            </li>
+            <li class="sidebar-item #{view.viewId == '/pages/postulacion/proceso.xhtml' ? 'active' : ''}">
+               <h:link outcome="procesoPostulacion" value="Proceso Postulación" styleClass="nav-link">
+                  <i class="pi pi-briefcase"></i>
+               </h:link>
+            </li>
+         </ul>
+      </div>
+      <div class="sidebar-footer">
+         <h:link outcome="perfil" styleClass="nav-link #{view.viewId == '/pages/perfil.xhtml' ? 'active' : ''}">
+            <i class="pi pi-cog"></i> Perfil
+         </h:link>
+         <h:form>
+            <p:commandLink action="#{loginBean.cerrarSesion}" styleClass="nav-link logout-link">
+               <i class="pi pi-sign-out"></i> Cerrar sesión
+            </p:commandLink>
+         </h:form>
+      </div>
+   </aside>
+</ui:composition>

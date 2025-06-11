@@ -1,0 +1,31 @@
+/* src/main/webapp/resources/css/variables.css */
+:root {
+    /* Paleta de colores */
+    --color-primary: #2a4b8d;
+    --color-secondary: #3a6fc9;
+    --color-accent: #4cc9f0;
+    --color-light: #e6f2ff;
+    --color-white: #ffffff;
+    --bg-light: #f8f9fa;
+    --bg-medium: #eef1f6;
+    --bg-dark: #2a3f5f;
+
+    /* Textos */
+    --text-dark: #2a3f5f;
+    --text-medium: #627597;
+    --text-light: #8e9bbd;
+
+    /* Estados */
+    --success: #06d6a0;
+    --warning: #ffd166;
+    --error: #ef476f;
+
+    /* Elementos UI */
+    --border-radius: 8px;
+    --box-shadow: 0 4px 20px rgba(42, 75, 141, 0.15);
+    --transition: all 0.3s ease;
+
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, #2a4b8d 0%, #3a6fc9 100%);
+    --gradient-secondary: linear-gradient(135deg, #3a6fc9 0%, #4cc9f0 100%);
+}

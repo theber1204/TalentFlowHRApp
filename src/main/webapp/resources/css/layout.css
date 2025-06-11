@@ -1,0 +1,119 @@
+/* ========== LAYOUT DEL DASHBOARD ========== */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    background: var(--color-white);
+    padding: 1rem 2rem;
+    box-shadow: var(--box-shadow);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.brand-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.main-layout {
+    display: flex;
+    flex: 1;
+}
+
+/* ========== SIDEBAR MEJORADO ========== */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 0;
+    border-right: 1px solid #e0e0e0;
+    background-color: var(--bg-light);
+}
+
+.sidebar-header {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-item {
+    margin: 0.3rem 0;
+}
+
+.nav-link {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--text-dark);
+    transition: var(--transition);
+    border-radius: 0.25rem;
+    margin: 0 0.5rem;
+}
+
+.nav-link .pi {
+    margin-right: 0.75rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: rgba(58, 111, 201, 0.1);
+    color: var(--color-secondary);
+    text-decoration: none;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    margin-top: auto;
+}
+
+.logout-link {
+    color: var(--error) !important;
+}
+
+.logout-link:hover {
+    background-color: rgba(239, 71, 111, 0.1) !important;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    background-color: var(--color-white);
+}
+
+.app-footer {
+    border-top: 1px solid #e0e0e0;
+    background: var(--bg-light);
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+    }
+
+    .sidebar-container {
+        width: 100%;
+        min-width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .sidebar {
+        min-height: auto;
+        padding: 0.5rem;
+    }
+}

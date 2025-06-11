@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><ui:insert name="title">TalentFlow HR</ui:insert></title>
+
+    <!-- Correcta referencia a los estilos -->
+    <h:outputStylesheet name="css/auth.css" />
+
+    <!-- PrimeFaces themes -->
+    <h:outputStylesheet library="primefaces-saga" name="theme.css" />
+
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</h:head>
+
+<h:body styleClass="auth-body">
+    <!-- Header -->
+    <header class="auth-header">
+        <div class="container">
+            <a href="#{request.contextPath}/" class="brand-link">
+                <h1>TalentFlow HR</h1>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="auth-main">
+        <div class="auth-container">
+            <ui:insert name="content" />
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="auth-footer">
+        <div class="container">
+            <p>© #{java.time.Year.now().getValue()} TalentFlow HR. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Términos</a>
+                <span>|</span>
+                <a href="#">Privacidad</a>
+                <span>|</span>
+                <a href="#">Ayuda</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript para validaciones -->
+    <h:outputScript>
+        function validatePassword(input) {
+            var value = input.value;
+            var strengthIndicator = document.getElementById('passwordStrength');
+            var strengthText = document.getElementById('strengthText');
+
+            // Validar requisitos
+            var hasUpperCase = /[A-Z]/.test(value);
+            var hasLowerCase = /[a-z]/.test(value);
+            var hasNumbers = /\d/.test(value);
+            var hasMinLength = value.length >= 6;
+
+            // Aplicar clases visuales según fortaleza
+            if (hasUpperCase &amp;&amp; hasLowerCase &amp;&amp; hasNumbers &amp;&amp; hasMinLength) {
+                input.classList.add('ui-state-valid');
+                input.classList.remove('ui-state-error');
+                if (strengthIndicator) {
+                    strengthIndicator.className = 'password-strength strong';
+                    if (strengthText) strengthText.innerHTML = 'Fuerte';
+                }
+            } else {
+                input.classList.add('ui-state-error');
+                input.classList.remove('ui-state-valid');
+                if (strengthIndicator) {
+                    strengthIndicator.className = 'password-strength weak';
+                    if (strengthText) strengthText.innerHTML = 'Débil';
+                }
+            }
+        }
+    </h:outputScript>
+</h:body>
+</html>

@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+   <div class="auth-header">
+      <h2 class="auth-title">Bienvenido de nuevo</h2>
+      <p class="auth-subtitle">Accede a tu cuenta para continuar</p>
+   </div>
+
+   <p:messages id="loginMessages" showDetail="false" closable="true" />
+
+   <!-- Botones de inicio de sesión social -->
+   <div class="social-login-buttons">
+      <a href="#" class="social-login-button google">
+         <i class="fab fa-google"></i>
+         <span>Google</span>
+      </a>
+      <a href="#" class="social-login-button facebook">
+         <i class="fab fa-facebook-f"></i>
+         <span>Facebook</span>
+      </a>
+   </div>
+
+   <div class="auth-separator">
+      <span>o continúa con email</span>
+   </div>
+
+   <div class="form-group">
+      <p:outputLabel for="username" value="Email" />
+      <p:inputText id="username" value="#{loginBean.username}"
+                   styleClass="form-control"
+                   required="true"
+                   requiredMessage="El email es obligatorio"
+                   placeholder="tu@email.com" />
+      <p:message for="username" id="usernameMsg" />
+   </div>
+
+   <div class="form-group">
+      <p:outputLabel for="password" value="Contraseña" />
+      <p:password id="password" value="#{loginBean.password}"
+                  styleClass="form-control"
+                  required="true"
+                  requiredMessage="La contraseña es obligatoria"
+                  placeholder="••••••••" />
+      <p:message for="password" id="passwordMsg" />
+   </div>
+
+   <div class="remember-forgot">
+      <div class="checkbox-wrapper">
+         <p:selectBooleanCheckbox id="recordarme" value="#{loginBean.recordarme}" />
+         <p:outputLabel for="recordarme" value="Recordarme" styleClass="checkbox-label" />
+      </div>
+
+      <p:commandButton value="¿Olvidaste tu contraseña?"
+                       type="button"
+                       styleClass="forgot-link ui-button-link"
+                       onclick="mostrarRecuperarDialog()" />
+   </div>
+
+   <div class="form-actions">
+      <p:commandButton id="loginButton"
+                       value="Iniciar Sesión"
+                       action="#{loginBean.loginModalSpecial}"
+                       styleClass="ui-button-raised ui-button-primary btn-block"
+                       process="@form"
+                       update="loginMessages @this"
+                       oncomplete="manejarRespuestaLogin(xhr, status, args)"/>
+   </div>
+
+   <div class="auth-footer">
+      <p class="auth-footer-text">
+         ¿No tienes cuenta?
+         <p:commandLink value="Crear cuenta"
+                        type="button"
+                        styleClass="auth-link"
+                        onclick="ejecutarCambioModo('register')" />
+      </p>
+   </div>
+
+</ui:composition>

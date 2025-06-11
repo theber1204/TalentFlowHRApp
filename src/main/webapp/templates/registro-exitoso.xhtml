@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/auth-layout.xhtml">
+   <ui:define name="title">Registro Exitoso - TalentFlow HR</ui:define>
+
+   <ui:define name="content">
+      <div class="auth-form fadeIn">
+         <div class="alert alert-success">
+            <i class="pi pi-check-circle"></i>
+            <h3>¡Registro completado con éxito!</h3>
+            <p>Tu cuenta ha sido creada correctamente. Ahora puedes iniciar sesión.</p>
+         </div>
+
+         <div class="form-actions">
+            <p:button value="Iniciar Sesión" outcome="/login" styleClass="btn btn-primary"/>
+            <p:button value="Volver al inicio" outcome="/index" styleClass="btn btn-secondary"/>
+         </div>
+      </div>
+   </ui:define>
+</ui:composition>
+</html>

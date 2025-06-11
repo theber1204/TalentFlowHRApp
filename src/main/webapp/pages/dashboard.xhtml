@@ -1,0 +1,37 @@
+<!-- src/main/webapp/pages/dashboard.xhtml -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/mainLayout.xhtml">
+
+    <ui:define name="title">Dashboard</ui:define>
+
+    <ui:define name="content">
+        <h2>Bienvenido al Dashboard</h2>
+        <p>Selecciona un módulo en el menú lateral para comenzar.</p>
+
+        <div class="cards-container">
+            <div class="dashboard-card">
+                <h5 class="card-title">Vacantes Activas</h5>
+                <div class="card-value primary">12</div>
+                <p class="card-text">Vacantes publicadas actualmente.</p>
+                <a href="#{request.contextPath}/vacantes" class="btn btn-outline">Ver detalles</a>
+            </div>
+
+            <div class="dashboard-card">
+                <h5 class="card-title">Candidatos Nuevos</h5>
+                <div class="card-value success">8</div>
+                <p class="card-text">Candidatos registrados esta semana.</p>
+                <a href="#{request.contextPath}/candidatos" class="btn btn-outline">Ver detalles</a>
+            </div>
+
+            <div class="dashboard-card">
+                <h5 class="card-title">Entrevistas Pendientes</h5>
+                <div class="card-value warning">5</div>
+                <p class="card-text">Entrevistas programadas para hoy.</p>
+                <a href="#" class="btn btn-outline">Ver calendario</a>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

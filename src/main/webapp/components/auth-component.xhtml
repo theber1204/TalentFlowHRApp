@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+   <h:panelGroup styleClass="auth-container" layout="block">
+      <!-- Formulario de Login -->
+      <h:panelGroup rendered="#{authController.authMode == 'login'}" layout="block" styleClass="auth-form">
+         <ui:include src="login-form.xhtml" />
+      </h:panelGroup>
+
+      <!-- Formulario de Registro -->
+      <h:panelGroup rendered="#{authController.authMode == 'register'}" layout="block" styleClass="auth-form">
+         <ui:include src="register-form.xhtml" />
+      </h:panelGroup>
+   </h:panelGroup>
+
+   <!-- Scripts para manejar respuestas -->
+   <!-- Código corregido para auth-component.xhtml -->
+   <h:outputScript>
+      // Función para manejar la respuesta del login
+      function manejarRespuestaLogin(xhr, status, args) {
+         if (args &amp;&amp; args.loggedIn) {
+            console.log("Login exitoso, redirigiendo a: " + args.dashboard);
+            window.location.href = args.dashboard;
+         } else {
+            console.log("Login fallido");
+            // El mensaje de error ya se muestra por PrimeFaces
+         }
+      }
+
+      // Función para manejar la respuesta del registro
+      function manejarRespuestaRegistro(xhr, status, args) {
+         console.log("Respuesta registro:", args);
+
+         if(args &amp;&amp; args.validationFailed) {
+            console.error("Falló la validación del formulario");
+         }
+
+         if(args &amp;&amp; args.error) {
+            console.error("Error en el servidor:", args.error);
+         }
+
+         if(args &amp;&amp; args.registrado === true) {
+            console.log("Registro exitoso, redirigiendo...");
+            PF('authDialogVar').hide();
+            setTimeout(function() {
+               window.location.href = args.dashboard;
+            }, 500);
+         } else {
+            console.log("El registro no fue exitoso");
+         }
+      }
+   </h:outputScript>
+
+</ui:composition>

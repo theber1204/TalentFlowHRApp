@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/templates/auth-layout.xhtml">
+
+   <ui:define name="title">Iniciar Sesión - #{msg['app.title']}</ui:define>
+
+   <ui:define name="content">
+      <div class="auth-container">
+         <div class="auth-form">
+            <h1>Iniciar Sesión</h1>
+            <p class="text-center text-muted mb-4">Accede a tu cuenta de TalentFlowHR</p>
+
+            <!-- Mensajes -->
+            <h:messages globalOnly="true"
+                        errorClass="alert alert-error"
+                        infoClass="alert alert-success"
+                        warnClass="alert alert-warning"/>
+
+            <h:form id="loginForm">
+
+               <div class="form-group">
+                  <h:outputLabel for="username" value="Email"/>
+                  <h:inputText id="username"
+                               value="#{loginBean.username}"
+                               styleClass="form-control"
+                               required="true"
+                               requiredMessage="El email es obligatorio"
+                               placeholder="tu@email.com">
+                     <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
+                     <f:ajax event="blur" render="usernameMsg"/>
+                  </h:inputText>
+                  <h:message id="usernameMsg" for="username" styleClass="error"/>
+               </div>
+
+               <div class="form-group">
+                  <h:outputLabel for="password" value="Contraseña"/>
+                  <h:inputSecret id="password"
+                                 value="#{loginBean.password}"
+                                 styleClass="form-control"
+                                 required="true"
+                                 requiredMessage="La contraseña es obligatoria"
+                                 placeholder="••••••••">
+                     <f:ajax event="blur" render="passwordMsg"/>
+                  </h:inputSecret>
+                  <h:message id="passwordMsg" for="password" styleClass="error"/>
+               </div>
+
+               <div class="form-group">
+                  <div class="form-options">
+                     <div class="checkbox-wrapper">
+                        <h:selectBooleanCheckbox id="recordarme" value="false"/>
+                        <h:outputLabel for="recordarme" value="Recordarme" styleClass="checkbox-label"/>
+                     </div>
+                     <h:link outcome="/pages/recuperar-password"
+                             value="¿Olvidaste tu contraseña?"
+                             styleClass="forgot-password"/>
+                  </div>
+               </div>
+
+               <div class="form-actions">
+                  <h:commandButton value="Iniciar Sesión"
+                                   action="#{loginBean.login()}"
+                                   styleClass="btn btn-primary">
+                     <f:ajax execute="@form" render="@form"/>
+                  </h:commandButton>
+
+                  <div class="form-divider">o</div>
+
+                  <h:link outcome="/pages/registro"
+                          value="Crear nueva cuenta"
+                          styleClass="btn btn-outline"/>
+               </div>
+
+            </h:form>
+
+            <!-- Demo credentials -->
+            <div class="demo-section">
+               <h4>Credenciales de Demo</h4>
+               <div class="demo-credentials">
+                  <p><strong>Administrador:</strong></p>
+                  <p>Email: admin@talentflow.com</p>
+                  <p>Contraseña: admin123</p>
+
+                  <p><strong>Usuario:</strong></p>
+                  <p>Email: user@talentflow.com</p>
+                  <p>Contraseña: user123</p>
+               </div>
+            </div>
+
+            <!-- Enlaces adicionales -->
+            <div class="auth-links">
+               <p>¿No tienes una cuenta?
+                  <h:link outcome="/pages/registro" value="Regístrate aquí"/>
+               </p>
+               <p>
+                  <h:link outcome="/index" value="← Volver al inicio"/>
+               </p>
+            </div>
+
+         </div>
+      </div>
+   </ui:define>
+
+</ui:composition>
+<!-- En login.xhtml -->
+<h:form id="loginForm">
+   <h1>Iniciar Sesión</h1>
+   <p class="text-center text-muted mb-4">Accede a tu cuenta de TalentFlowHR</p>
+
+   <h:messages globalOnly="true"
+               errorClass="alert alert-error"
+               infoClass="alert alert-success"
+               warnClass="alert alert-warning"/>
+
+   <ui:include src="/components/login-form.xhtml">
+      <ui:define name="login-actions">
+         <div class="form-actions">
+            <h:commandButton value="Iniciar Sesión"
+                             action="#{loginBean.login}"
+                             styleClass="btn btn-primary">
+               <f:ajax execute="@form" render="@form"/>
+            </h:commandButton>
+
+            <div class="form-divider">o</div>
+
+            <h:link outcome="/registro"
+                    value="Crear nueva cuenta"
+                    styleClass="btn btn-outline"/>
+         </div>
+      </ui:define>
+   </ui:include>
+</h:form>
+</html>

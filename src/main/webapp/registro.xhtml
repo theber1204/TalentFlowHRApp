@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/auth-layout.xhtml">
+    <ui:define name="title">Registro - TalentFlow HR</ui:define>
+
+    <ui:define name="content">
+        <div class="auth-form">
+            <h1 class="text-center">Crear Cuenta</h1>
+            <p class="text-center text-muted mb-4">Completa el formulario para registrarte</p>
+
+            <h:form id="registroForm">
+                <p:growl id="growl" showDetail="true" sticky="false" life="3000" />
+
+                <p:card styleClass="mb-4">
+                    <f:facet name="title">
+                        <i class="pi pi-user"></i> Datos Personales
+                    </f:facet>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <p:outputLabel for="nombre" value="Nombre" styleClass="required" />
+                            <span class="required-indicator">*</span>
+                            <p:inputText id="nombre" value="#{registroBean.usuario.nombre}"
+                                         required="true" requiredMessage="El nombre es obligatorio"
+                                         styleClass="form-control">
+                                <p:ajax event="blur" update="nombreMsg" />
+                            </p:inputText>
+                            <p:message for="nombre" id="nombreMsg" />
+                        </div>
+
+                        <div class="form-group">
+                            <p:outputLabel for="apellidos" value="Apellidos" styleClass="required" />
+                            <span class="required-indicator">*</span>
+                            <p:inputText id="apellidos" value="#{registroBean.usuario.apellidos}"
+                                         required="true" requiredMessage="Los apellidos son obligatorios"
+                                         styleClass="form-control">
+                                <p:ajax event="blur" update="apellidosMsg" />
+                            </p:inputText>
+                            <p:message for="apellidos" id="apellidosMsg" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <p:outputLabel for="empresa" value="Empresa" />
+                            <p:inputText id="empresa" value="#{registroBean.usuario.empresa}"
+                                         styleClass="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <p:outputLabel for="telefono" value="Teléfono" />
+                            <p:inputMask id="telefono" value="#{registroBean.usuario.telefono}"
+                                         mask="(999) 999-9999" styleClass="form-control"
+                                         placeholder="(555) 555-5555" />
+                        </div>
+                    </div>
+                </p:card>
+
+                <p:card styleClass="mb-4">
+                    <f:facet name="title">
+                        <i class="pi pi-lock"></i> Datos de Acceso
+                    </f:facet>
+
+                    <div class="form-group">
+                        <p:outputLabel for="email" value="Email" styleClass="required" />
+                        <span class="required-indicator">*</span>
+                        <p:inputText id="email" value="#{registroBean.usuario.email}"
+                                     required="true" requiredMessage="El email es obligatorio"
+                                     validatorMessage="Email no válido" styleClass="form-control">
+                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
+                            <p:ajax event="blur" update="emailMsg" />
+                        </p:inputText>
+                        <p:message for="email" id="emailMsg" />
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel for="password" value="Contraseña" styleClass="required" />
+                        <span class="required-indicator">*</span>
+                        <p:password id="password" value="#{registroBean.usuario.password}"
+                                    required="true" requiredMessage="La contraseña es obligatoria"
+                                    feedback="true" inline="true" promptLabel="Ingrese su contraseña"
+                                    weakLabel="Débil" goodLabel="Moderada" strongLabel="Fuerte"
+                                    styleClass="form-control">
+                            <p:ajax event="blur" update="passwordMsg" />
+                        </p:password>
+                        <p:message for="password" id="passwordMsg" />
+                        <small class="form-text">
+                            Debe contener al menos 6 caracteres con mayúsculas, minúsculas y números
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel for="confirmPassword" value="Confirmar Contraseña" styleClass="required" />
+                        <span class="required-indicator">*</span>
+                        <p:password id="confirmPassword" value="#{registroBean.confirmPassword}"
+                                    required="true" requiredMessage="Por favor confirme la contraseña"
+                                    styleClass="form-control">
+                            <p:ajax event="blur" update="confirmPasswordMsg" />
+                        </p:password>
+                        <p:message for="confirmPassword" id="confirmPasswordMsg" />
+                    </div>
+                </p:card>
+
+                <p:card styleClass="mb-4">
+                    <f:facet name="title">
+                        <i class="pi pi-check-circle"></i> Confirmación
+                    </f:facet>
+
+                    <div class="form-group checkbox-wrapper">
+                        <p:selectBooleanCheckbox id="terminos" value="#{registroBean.aceptaTerminos}" />
+                        <p:outputLabel for="terminos" styleClass="checkbox-label">
+                            Acepto los <a href="#" class="link">términos y condiciones</a> y la
+                            <a href="#" class="link">política de privacidad</a>
+                        </p:outputLabel>
+                    </div>
+                    <p:message for="terminos" id="terminosMsg" />
+                </p:card>
+
+                <div class="form-actions">
+                    <p:commandButton value="Registrarme" action="#{registroBean.registrar}"
+                                     styleClass="btn btn-primary" icon="pi pi-user-plus"
+                                     update="registroForm growl" />
+
+                    <p:commandButton value="Limpiar" type="reset"
+                                     styleClass="btn btn-secondary" icon="pi pi-refresh"
+                                     style="margin-left: 10px;" />
+                </div>
+
+                <div class="auth-links">
+                    <p>¿Ya tienes cuenta? <h:link outcome="/login" value="Iniciar Sesión" /></p>
+                </div>
+            </h:form>
+
+            <div class="demo-section">
+                <h4><i class="pi pi-info-circle"></i> Información de Prueba</h4>
+                <div class="demo-credentials">
+                    <p>Para probar la aplicación, puedes usar:</p>
+                    <p><strong>Email:</strong> user@talentflow.com</p>
+                    <p><strong>Contraseña:</strong> User123</p>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

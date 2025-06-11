@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/templates/mainLayout.xhtml">
+
+    <ui:define name="content">
+        <h2>Procesos de Postulación</h2>
+        <p:messages id="messages" showDetail="true" closable="true" />
+
+        <p:orderList id="kanbanBoard" value="#{postulacionBean.columnas}" var="columna"
+                     itemValue="#{columna}" controlsLocation="none" responsive="true"
+                     styleClass="kanban-board">
+            <f:facet name="caption">Arrastra las tarjetas entre columnas</f:facet>
+            <p:column>
+                <div class="kanban-columna">
+                    <div class="kanban-columna-header" style="background-color: #{columna.color}">
+                        <h3>#{columna.titulo} (#{columna.postulaciones.size()})</h3>
+                    </div>
+
+                    <div class="kanban-tarjetas">
+                        <p:dataGrid id="tarjetas_#{columna.id}" var="postulacion" value="#{columna.postulaciones}"
+                                    columns="1" layout="grid" styleClass="kanban-grid">
+                            <p:draggable for="tarjeta_#{postulacion.id}" helper="clone" handle=".kanban-header"
+                                         scope="tarjetaKanban" />
+
+                            <div id="tarjeta_#{postulacion.id}" class="kanban-tarjeta">
+                                <div class="kanban-header">
+                                    <span class="kanban-title">#{postulacion.candidato.nombre} #{postulacion.candidato.apellidos}</span>
+                                    <p:tag value="#{postulacion.candidato.experiencia}"
+                                           severity="#{postulacionBean.getSeverityByExperiencia(postulacion.candidato.experiencia)}" />
+                                </div>
+
+                                <div class="kanban-body">
+                                    <p><i class="pi pi-briefcase"></i> Vacante: #{postulacion.vacante}</p>
+                                    <p><i class="pi pi-calendar"></i> Fecha: #{postulacion.fechaFormateada}</p>
+
+                                    <div class="kanban-tags">
+                                        <ui:repeat value="#{postulacion.candidato.habilidades}" var="habilidad">
+                                            <span class="kanban-tag">#{habilidad}</span>
+                                        </ui:repeat>
+                                    </div>
+                                </div>
+
+                                <div class="kanban-footer">
+                                    <p:commandButton icon="pi pi-eye"
+                                                     actionListener="#{postulacionBean.verDetalles(postulacion)}"
+                                                     update=":detalleForm"
+                                                     oncomplete="PF('detalleDialog').show()"
+                                                     styleClass="p-button-rounded p-button-info p-button-sm"
+                                                     title="Ver detalles" />
+
+                                    <p:commandButton icon="pi pi-comments"
+                                                     actionListener="#{postulacionBean.verComentarios(postulacion)}"
+                                                     update=":comentariosForm"
+                                                     oncomplete="PF('comentariosDialog').show()"
+                                                     styleClass="p-button-rounded p-button-secondary p-button-sm"
+                                                     title="Comentarios" />
+                                </div>
+                            </div>
+                        </p:dataGrid>
+
+                        <p:droppable for="tarjetas_#{columna.id}"
+                                     scope="tarjetaKanban"
+                                     activeStyleClass="kanban-columna-activa"
+                                     onDrop="handleDrop(event, ui, #{columna.id})" />
+                    </div>
+                </div>
+            </p:column>
+        </p:orderList>
+
+        <!-- JavaScript para manejar el drag & drop -->
+        <h:outputScript>
+            function handleDrop(event, ui, columnaId) {
+                var tarjetaId = ui.draggable.attr('id').replace('tarjeta_', '');
+                moverPostulacion([{name:'tarjetaId', value:tarjetaId}, {name:'columnaId', value:columnaId}]);
+            }
+        </h:outputScript>
+
+        <p:remoteCommand name="moverPostulacion" action="#{postulacionBean.moverPostulacion}" update="kanbanBoard messages" />
+
+        <!-- Diálogo para ver detalles de la postulación -->
+        <p:dialog header="Detalles de Postulación" widgetVar="detalleDialog" modal="true" responsive="true" width="600">
+            <h:form id="detalleForm">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+                             columnClasses="ui-grid-col-4,ui-grid-col-8">
+                    <h:outputLabel value="Candidato:" />
+                    <h:outputText value="#{postulacionBean.postulacionSeleccionada.candidato.nombre}
+                                       #{postulacionBean.postulacionSeleccionada.candidato.apellidos}" />
+
+                    <h:outputLabel value="Email:" />
+                    <h:outputText value="#{postulacionBean.postulacionSeleccionada.candidato.email}" />
+
+                    <h:outputLabel value="Teléfono:" />
+                    <h:outputText value="#{postulacionBean.postulacionSeleccionada.candidato.telefono}" />
+
+                    <h:outputLabel value="Experiencia:" />
+                    <h:outputText value="#{postulacionBean.postulacionSeleccionada.candidato.experiencia}" />
+
+                    <h:outputLabel value="Vacante:" />
+                    <h:outputText value="#{postulacionBean.postulacionSeleccionada.vacante}" />
+
+                    <h:outputLabel value="Fecha de postulación:" />
+                    <h:outputText value="#{postulacionBean.postulacionSeleccionada.fechaFormateada}" />
+
+                    <h:outputLabel value="Estado actual:" />
+                    <h:outputText value="#{postulacionBean.postulacionSeleccionada.estado}" />
+                </p:panelGrid>
+
+                <div class="dialog-footer">
+                    <p:commandButton value="Cerrar"
+                                     onclick="PF('detalleDialog').hide()"
+                                     type="button" />
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo para comentarios -->
+        <p:dialog header="Comentarios" widgetVar="comentariosDialog" modal="true" responsive="true" width="600">
+            <h:form id="comentariosForm">
+                <p:timeline id="timeline" value="#{postulacionBean.comentariosTimeline}"
+                            widgetVar="timeline" height="250px"
+                            styleClass="comentarios-timeline"
+                            editable="true"
+                            axisOnTop="true"
+                            eventStyle="box">
+                    <p:ajax event="add" listener="#{postulacionBean.onAdd}" update="timeline" />
+                </p:timeline>
+
+                <div class="form-group mt-4">
+                    <p:outputLabel for="nuevoComentario" value="Nuevo comentario:" />
+                    <p:inputTextarea id="nuevoComentario" value="#{postulacionBean.nuevoComentario}" rows="3" />
+                </div>
+
+                <div class="dialog-footer">
+                    <p:commandButton value="Añadir comentario"
+                                     action="#{postulacionBean.agregarComentario}"
+                                     update="timeline"
+                                     icon="pi pi-plus" />
+                    <p:commandButton value="Cerrar"
+                                     onclick="PF('comentariosDialog').hide()"
+                                     type="button" />
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="data-table-container">
+        <p:dataTable id="#{id}" value="#{value}" var="item"
+                     paginator="#{paginator == null ? true : paginator}"
+                     paginatorPosition="bottom"
+                     rowsPerPageTemplate="10,25,50"
+                     rows="#{rows == null ? 10 : rows}"
+                     emptyMessage="No hay registros disponibles"
+                     filteredValue="#{filteredValue}"
+                     widgetVar="#{widgetVar}"
+                     reflow="true"
+                     rowHover="true">
+
+            <!-- Cabecera personalizable -->
+            <f:facet name="header">
+                <div class="table-toolbar">
+                    <div class="table-title">#{tableTitle}</div>
+                    <div class="table-actions">
+                        <ui:insert name="tableActions"/>
+                    </div>
+                </div>
+            </f:facet>
+
+            <!-- Columnas dinámicas -->
+            <ui:insert name="columns"/>
+
+            <!-- Acciones por fila -->
+            <p:column headerText="Acciones" styleClass="action-column" exportable="false"
+                      rendered="#{showActions == null ? true : showActions}">
+                <div class="action-buttons">
+                    <ui:insert name="rowActions"/>
+                </div>
+            </p:column>
+        </p:dataTable>
+    </div>
+</ui:composition>

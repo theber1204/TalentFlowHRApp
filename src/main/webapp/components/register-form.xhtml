@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+   <div class="auth-header">
+      <h2 class="auth-title">Crear cuenta</h2>
+      <p class="auth-subtitle">Únete a la comunidad de TalentFlowHR</p>
+   </div>
+
+   <p:messages id="registerMessages" showDetail="false" closable="true">
+      <p:autoUpdate/>
+   </p:messages>
+
+   <!-- Contenedor con scroll -->
+   <div class="auth-form-scroll">
+      <!-- Botones de registro social -->
+      <div class="social-login-buttons">
+         <a href="#" class="social-login-button google">
+            <i class="fab fa-google"></i>
+            <span>Google</span>
+         </a>
+         <a href="#" class="social-login-button facebook">
+            <i class="fab fa-facebook-f"></i>
+            <span>Facebook</span>
+         </a>
+      </div>
+
+      <div class="auth-separator">
+         <span>o regístrate con email</span>
+      </div>
+
+      <!-- Campos de nombre y apellido en una fila -->
+      <div class="form-row">
+         <div class="form-group form-group-half">
+            <p:outputLabel for="reg_nombre" value="Nombre" />
+            <p:inputText id="reg_nombre" value="#{registroBean.usuario.nombre}"
+                         styleClass="form-control"
+                         required="true"
+                         requiredMessage="El nombre es obligatorio"/>
+            <p:message for="reg_nombre" id="reg_nombreMsg" />
+         </div>
+
+         <div class="form-group form-group-half">
+            <p:outputLabel for="reg_apellidos" value="Apellidos" />
+            <p:inputText id="reg_apellidos" value="#{registroBean.usuario.apellidos}"
+                         styleClass="form-control"
+                         required="true"
+                         requiredMessage="Los apellidos son obligatorios"/>
+            <p:message for="reg_apellidos" id="reg_apellidosMsg" />
+         </div>
+      </div>
+
+      <div class="form-group">
+         <p:outputLabel for="reg_email" value="Email" />
+         <p:inputText id="reg_email" value="#{registroBean.usuario.email}"
+                      styleClass="form-control"
+                      required="true"
+                      requiredMessage="El email es obligatorio"/>
+         <p:message for="reg_email" id="reg_emailMsg" />
+      </div>
+
+      <div class="form-group">
+         <p:outputLabel for="reg_password" value="Contraseña" />
+         <p:password id="reg_password" value="#{registroBean.usuario.password}"
+                     styleClass="form-control"
+                     required="true"
+                     requiredMessage="La contraseña es obligatoria"
+                     feedback="true"
+                     promptLabel="Seguridad"
+                     weakLabel="Débil"
+                     goodLabel="Buena"
+                     strongLabel="Fuerte"/>
+         <p:message for="reg_password" id="reg_passwordMsg" />
+      </div>
+
+      <div class="form-group">
+         <p:outputLabel for="reg_confirm" value="Confirmar contraseña" />
+         <p:password id="reg_confirm" value="#{registroBean.confirmPassword}"
+                     styleClass="form-control"
+                     required="true"
+                     requiredMessage="La confirmación es obligatoria"/>
+         <p:message for="reg_confirm" id="reg_confirmMsg" />
+      </div>
+
+      <div class="form-group">
+         <p:outputLabel for="reg_empresa" value="Empresa (opcional)" />
+         <p:inputText id="reg_empresa" value="#{registroBean.usuario.empresa}"
+                      styleClass="form-control"/>
+         <p:message for="reg_empresa" id="reg_empresaMsg" />
+      </div>
+
+      <div class="form-group checkbox-wrapper">
+         <p:selectBooleanCheckbox id="terminos" value="#{registroBean.aceptaTerminos}" />
+         <p:outputLabel for="terminos" styleClass="checkbox-label">
+            Acepto los <a href="#" class="auth-link">términos y condiciones</a>
+         </p:outputLabel>
+         <p:message for="terminos" id="terminosMsg" />
+      </div>
+   </div>
+
+   <div class="form-actions">
+      <p:commandButton value="Registrarse"
+                       action="#{registroBean.registrarModal}"
+                       styleClass="ui-button-raised ui-button-primary btn-block"
+                       process="@form"
+                       update="registerMessages @this"
+                       oncomplete="manejarRespuestaRegistro(xhr, status, args)"/>
+   </div>
+
+   <div class="auth-footer">
+      <p class="auth-footer-text">
+         ¿Ya tienes cuenta?
+         <p:commandLink value="Iniciar sesión"
+                        type="button"
+                        styleClass="auth-link"
+                        onclick="ejecutarCambioModo('login')" />
+      </p>
+   </div>
+
+</ui:composition>

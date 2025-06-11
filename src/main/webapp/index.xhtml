@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TalentFlowHR - Gestión de Recursos Humanos Simplificada</title>
+  <h:outputStylesheet library="css" name="variables.css"/>
+  <h:outputStylesheet library="css" name="base.css"/>
+  <h:outputStylesheet library="css" name="components.css"/>
+  <h:outputStylesheet library="css" name="landing.css"/>
+  <h:outputStylesheet library="css" name="auth.css"/>
+  <h:outputStylesheet library="primefaces-saga" name="theme.css"/>
+  <h:outputStylesheet library="css" name="primefixes.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Definir la función a nivel global -->
+  <h:outputScript>
+    // Función para preparar y mostrar el modal
+    function prepararModal(modo) {
+      // Ocultar diálogo si está visible
+      if (PF('authDialogVar').isVisible()) {
+        PF('authDialogVar').hide();
+        setTimeout(function() {
+          ejecutarCambioModo(modo);
+        }, 300);
+      } else {
+        ejecutarCambioModo(modo);
+      }
+    }
+
+    function ejecutarCambioModo(modo) {
+      // Usar el remoteCommand con el parámetro correcto
+      cambiarModo([{name: 'mode', value: modo}]);
+    }
+
+    // Función para manejar la respuesta del login/registro
+    function manejarRespuestaAuth(xhr, status, args, esLogin) {
+      console.log("Respuesta auth:", args);
+      var exitoso = esLogin ? args.loggedIn === true : args.registrado === true;
+
+      if(args &amp;&amp; exitoso) {
+        PF('authDialogVar').hide();
+        setTimeout(function() {
+          window.location.href = args.dashboard;
+        }, 500);
+      }
+    }
+
+    function manejarRespuestaLogin(xhr, status, args) {
+      manejarRespuestaAuth(xhr, status, args, true);
+    }
+
+    function manejarRespuestaRegistro(xhr, status, args) {
+      manejarRespuestaAuth(xhr, status, args, false);
+    }
+
+    function mostrarRecuperarDialog() {
+      PF('authDialogVar').hide();
+      setTimeout(function() {
+        PF('recuperarDialogVar').show();
+      }, 300);
+    }
+
+  </h:outputScript>
+</h:head>
+
+<h:body styleClass="landing-body">
+  <p:growl id="growl" showDetail="false" life="3000" />
+  <!-- Header con navegación -->
+  <header class="landing-header">
+    <div class="container header-container">
+      <a href="#" class="logo">TalentFlowHR</a>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#features">Características</a></li>
+          <li><a href="#benefits">Beneficios</a></li>
+          <li><a href="#testimonials">Testimonios</a></li>
+          <li><a href="#pricing">Precios</a></li>
+        </ul>
+      </nav>
+
+      <h:form id="headerForm">
+        <div class="header-actions">
+          <p:commandButton value="Iniciar Sesión"
+                           action="#{authController.setAuthMode('login')}"
+                           styleClass="btn btn-primary btn-block"
+                           process="@this"
+                           update=":authForm"
+                           oncomplete="PF('authDialogVar').show();" />
+        </div>
+        <p:remoteCommand name="cambiarModo"
+                         action="#{authController.setAuthMode}"
+                         process="@this"
+                         update=":authForm"
+                         oncomplete="PF('authDialogVar').show();">
+          <f:param name="mode" value="" />
+        </p:remoteCommand>
+      </h:form>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Gestión de Talento <span class="highlight">Simplificada</span></h1>
+        <p class="hero-description">
+          Optimiza tus procesos de recursos humanos con nuestra plataforma integral.
+          Desde la contratación hasta la gestión de desempeño, todo en un solo lugar.
+        </p>
+        <div class="hero-actions">
+          <p:commandButton value="Comenzar Ahora"
+                           type="button"
+                           styleClass="btn btn-primary btn-lg"
+                           onclick="prepararModal('register')"/>
+          <a href="#demo" class="btn btn-outline btn-lg">Ver Demo</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <h:graphicImage library="images" name="dashboard-preview.png" alt="TalentFlow Dashboard"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <h2 class="section-title">Características Principales</h2>
+      <p class="section-subtitle">Todo lo que necesitas para gestionar tu equipo</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fas fa-users feature-icon"></i>
+          <h3>Gestión de Candidatos</h3>
+          <p>Seguimiento completo del proceso de selección desde la aplicación hasta la contratación.</p>
+        </div>
+
+        <div class="feature-card">
+          <i class="fas fa-chart-line feature-icon"></i>
+          <h3>Evaluación de Desempeño</h3>
+          <p>Establece objetivos, realiza evaluaciones y proporciona feedback continuo.</p>
+        </div>
+
+        <div class="feature-card">
+          <i class="fas fa-calendar-alt feature-icon"></i>
+          <h3>Gestión de Ausencias</h3>
+          <p>Control de vacaciones, permisos y bajas de manera sencilla y automatizada.</p>
+        </div>
+
+        <div class="feature-card">
+          <i class="fas fa-file-invoice feature-icon"></i>
+          <h3>Nóminas</h3>
+          <p>Integración con los principales sistemas de nómina y gestión de compensaciones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section id="benefits" class="benefits-section">
+    <div class="container">
+      <h2 class="section-title">Beneficios</h2>
+      <p class="section-subtitle">¿Por qué elegir TalentFlowHR?</p>
+
+      <div class="benefits-container">
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="benefit-content">
+            <h3>Aumenta la Productividad</h3>
+            <p>Automatiza tareas repetitivas y libera tiempo para enfocarte en lo importante.</p>
+          </div>
+        </div>
+
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="benefit-content">
+            <h3>Toma Mejores Decisiones</h3>
+            <p>Accede a datos en tiempo real y análisis avanzados para tomar decisiones informadas.</p>
+          </div>
+        </div>
+
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <i class="fas fa-smile"></i>
+          </div>
+          <div class="benefit-content">
+            <h3>Mejora la Experiencia del Empleado</h3>
+            <p>Portal del empleado intuitivo y herramientas de autoservicio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="testimonials-section">
+    <div class="container">
+      <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <p>"TalentFlowHR ha transformado nuestra forma de gestionar el talento. Ahora todo el proceso es más rápido y eficiente."</p>
+          </div>
+          <div class="testimonial-author">
+            <h:graphicImage library="images" name="avatar1.jpg" styleClass="testimonial-avatar" alt="Avatar"/>
+            <div>
+              <h4>María González</h4>
+              <p>Directora de RRHH, Empresa ABC</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <p>"La implementación fue rápida y el soporte técnico es excepcional. Recomiendo ampliamente esta plataforma."</p>
+          </div>
+          <div class="testimonial-author">
+            <h:graphicImage library="images" name="avatar2.jpg" styleClass="testimonial-avatar" alt="Avatar"/>
+            <div>
+              <h4>Carlos Martínez</h4>
+              <p>CEO, StartupXYZ</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <p>"La reducción en tiempo de administración ha sido notable. Ahora podemos dedicarnos a estrategias de retención."</p>
+          </div>
+          <div class="testimonial-author">
+            <h:graphicImage library="images" name="avatar3.jpg" styleClass="testimonial-avatar" alt="Avatar"/>
+            <div>
+              <h4>Laura Sánchez</h4>
+              <p>HR Manager, Corporación Global</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Comienza a optimizar tu gestión de talento hoy</h2>
+        <p>Únete a más de 500 empresas que ya están mejorando su productividad con TalentFlowHR.</p>
+        <p:commandButton value="Registrarse Gratis"
+                         type="button"
+                         styleClass="btn btn-primary btn-lg"
+                         onclick="prepararModal('register')" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h3 class="footer-title">TalentFlowHR</h3>
+          <p>Soluciones innovadoras para la gestión del talento humano.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h3 class="footer-title">Enlaces</h3>
+          <ul class="footer-links">
+            <li><a href="#features">Características</a></li>
+            <li><a href="#pricing">Precios</a></li>
+            <li><a href="#testimonials">Testimonios</a></li>
+            <li><a href="#">Contáctanos</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3 class="footer-title">Legal</h3>
+          <ul class="footer-links">
+            <li><a href="#">Términos de Servicio</a></li>
+            <li><a href="#">Política de Privacidad</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3 class="footer-title">Contacto</h3>
+          <ul class="footer-contact">
+            <li><i class="fas fa-envelope"></i> info@talentflow.com</li>
+            <li><i class="fas fa-phone"></i> +34 900 123 456</li>
+            <li><i class="fas fa-map-marker-alt"></i> Calle Principal 123, Madrid</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 TalentFlowHR. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal de autenticación -->
+  <h:form id="authForm">
+    <p:dialog header="#{authController.authMode == 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}"
+              widgetVar="authDialogVar"
+              modal="true"
+              responsive="true"
+              position="center"
+              width="450"
+              height="auto"
+              styleClass="auth-dialog"
+              closeOnEscape="true"
+              dynamic="true"
+              fitViewport="true"
+              closable="true">
+      <ui:include src="/components/auth-component.xhtml" />
+    </p:dialog>
+  </h:form>
+
+  <h:form id="recuperarForm">
+    <p:dialog widgetVar="recuperarDialogVar"
+              header="Recuperar Contraseña"
+              modal="true"
+              width="400"
+              closeOnEscape="true"
+              dynamic="true">
+      <p>Introduce tu email para recuperar tu contraseña</p>
+      <div class="form-group">
+        <p:inputText placeholder="Email" styleClass="form-control" />
+      </div>
+      <div class="form-actions">
+        <p:commandButton value="Recuperar"
+                         actionListener="#{loginBean.mostrarMensajeRecuperacion}"
+                         oncomplete="PF('recuperarDialogVar').hide();"
+                         update=":growl"
+                         styleClass="btn btn-primary" />
+      </div>
+    </p:dialog>
+  </h:form>
+
+</h:body>
+</html>
