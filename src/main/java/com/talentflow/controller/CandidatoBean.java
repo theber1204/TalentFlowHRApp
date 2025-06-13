@@ -51,12 +51,17 @@ public class CandidatoBean implements Serializable {
 
     public void saveCandidato() {
         try {
+            System.out.println("Datos del candidato: " + candidato);
             if (archivoAdjunto != null && archivoAdjunto.getSize() > 0) {
                 String rutaArchivo = guardarArchivo(archivoAdjunto);
                 if (candidato.getArchivosAdjuntos() == null) {
                     candidato.setArchivosAdjuntos(new ArrayList<>());
                 }
                 candidato.getArchivosAdjuntos().add(rutaArchivo);
+            }
+            // Inicializar la fecha de creación
+            if (!editMode) {
+                candidato.setFechaCreacion(new java.util.Date());
             }
 
             if (editMode) {
@@ -73,6 +78,7 @@ public class CandidatoBean implements Serializable {
             prepareNewCandidato();
 
         } catch (Exception e) {
+            e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
                             "Ha ocurrido un error al guardar: " + e.getMessage()));

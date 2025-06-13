@@ -9,24 +9,31 @@ public class Candidato implements Serializable {
     private String apellidos;
     private String email;
     private String telefono;
+    private String empresa;
     private String estado;
     private List<String> archivosAdjuntos;
     private java.util.Date fechaCreacion;
     private java.util.Date fechaActualizacion;
 
+    private String columnaId;
+
     public Candidato() {}
 
-    public Candidato(Long id, String nombre, String apellidos, String email, String telefono, String estado,
+    public Candidato(Long id, String nombre, String apellidos, String email, String telefono, String empresa, String estado,
                      List<String> archivosAdjuntos, java.util.Date fechaCreacion, java.util.Date fechaActualizacion) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
         this.telefono = telefono;
+        this.empresa = empresa;
         this.estado = estado;
         this.archivosAdjuntos = archivosAdjuntos;
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public <E> Candidato(long l, String juan, String pérez, String mail, String number, String senior, List<E> java) {
     }
 
 
@@ -69,6 +76,19 @@ public class Candidato implements Serializable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getEmpresa() {return empresa;}
+
+    public void setEmpresa(String empresa) {this.empresa = empresa;}
+
+    // Getters y Setters para columnaId
+    public String getColumnaId() {
+        return columnaId;
+    }
+
+    public void setColumnaId(String columnaId) {
+        this.columnaId = columnaId;
     }
 
     public String getEstado() {

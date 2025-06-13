@@ -1,6 +1,7 @@
 package com.talentflow.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ColumnaKanban implements Serializable {
@@ -8,6 +9,15 @@ public class ColumnaKanban implements Serializable {
     private String titulo;
     private String color;
     private List<Postulacion> postulaciones;
+
+    public ColumnaKanban(Long id, String titulo, String color, List<Postulacion> postulaciones) {
+        this.id = id;
+        this.titulo = titulo;
+        this.color = color;
+        this.postulaciones = postulaciones;
+    }
+    public ColumnaKanban(long l, String pendiente) {
+    }
 
     // Getters y Setters
     public Long getId() {
