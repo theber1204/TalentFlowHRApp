@@ -1,7 +1,6 @@
 package com.talentflow.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Postulacion implements Serializable {
@@ -10,13 +9,6 @@ public class Postulacion implements Serializable {
     private String vacante;
     private Date fecha;
     private String estado;
-    private Long columnaId;
-
-    public String getFechaFormateada() {
-        if (fecha == null) return "";
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(fecha);
-    }
 
     // Getters y Setters
     public Long getId() {
@@ -58,12 +50,12 @@ public class Postulacion implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
-    public Long getColumnaId() {
-        return columnaId;
-    }
-
-    public void setColumnaId(Long columnaId) {
-        this.columnaId = columnaId;
+    public Postulacion() {}
+    public Postulacion(Long id, Candidato candidato, String vacante, Date fecha, String estado) {
+        this.id = id;
+        this.candidato = candidato;
+        this.vacante = vacante;
+        this.fecha = fecha;
+        this.estado = estado;
     }
 }

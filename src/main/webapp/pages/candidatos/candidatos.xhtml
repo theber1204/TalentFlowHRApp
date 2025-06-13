@@ -43,12 +43,32 @@
                         <h:outputText value="#{item.nombre}" />
                     </p:column>
 
-                    <p:column headerText="Email" sortBy="#{item.email}">
+                    <p:column headerText="Apellidos" sortBy="#{item.apellidos}" filterBy="#{item.apellidos}">
+                        <h:outputText value="#{item.apellidos}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{item.email}" filterBy="#{item.email}">
                         <h:outputText value="#{item.email}" />
                     </p:column>
 
-                    <p:column headerText="Teléfono" sortBy="#{item.telefono}">
+                    <p:column headerText="Teléfono" sortBy="#{item.telefono}" filterBy="#{item.telefono}">
                         <h:outputText value="#{item.telefono}" />
+                    </p:column>
+
+                    <p:column headerText="Empresa" sortBy="#{item.empresa}" filterBy="#{item.empresa}">
+                        <h:outputText value="#{item.empresa}" />
+                    </p:column>
+
+                    <p:column headerText="Estado" sortBy="#{item.estado}" filterBy="#{item.estado}">
+                        <h:outputText value="#{item.estado}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha de Creación" sortBy="#{item.fechaCreacion}">
+                        <h:outputText value="#{item.fechaCreacion}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha de Actualización" sortBy="#{item.fechaActualizacion}">
+                        <h:outputText value="#{item.fechaActualizacion}" />
                     </p:column>
 
                     <p:column headerText="Acciones" exportable="false">
@@ -57,23 +77,20 @@
                                              update=":viewForm"
                                              oncomplete="PF('dlgVer').show()"
                                              styleClass="ui-button-info">
-                                <f:setPropertyActionListener value="#{item}"
-                                                             target="#{candidatoBean.candidato}" />
+                                <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
                             </p:commandButton>
 
                             <p:commandButton icon="pi pi-pencil"
                                              update=":editForm"
                                              oncomplete="PF('dlgEditar').show()"
                                              styleClass="ui-button-warning">
-                                <f:setPropertyActionListener value="#{item}"
-                                                             target="#{candidatoBean.candidato}" />
+                                <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
                             </p:commandButton>
 
                             <p:commandButton icon="pi pi-trash"
                                              styleClass="ui-button-danger"
                                              oncomplete="PF('confirmDelete').show()">
-                                <f:setPropertyActionListener value="#{item}"
-                                                             target="#{candidatoBean.candidato}" />
+                                <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
                             </p:commandButton>
                         </div>
                     </p:column>
@@ -89,12 +106,24 @@
                             <p:inputText id="nombre" value="#{candidatoBean.candidato.nombre}" required="true" />
                         </div>
                         <div class="p-col-12">
+                            <p:outputLabel for="apellidos" value="Apellidos:" />
+                            <p:inputText id="apellidos" value="#{candidatoBean.candidato.apellidos}" required="true" />
+                        </div>
+                        <div class="p-col-12">
                             <p:outputLabel for="email" value="Email:" />
                             <p:inputText id="email" value="#{candidatoBean.candidato.email}" />
                         </div>
                         <div class="p-col-12">
                             <p:outputLabel for="telefono" value="Teléfono:" />
                             <p:inputText id="telefono" value="#{candidatoBean.candidato.telefono}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel for="empresa" value="Empresa:" />
+                            <p:inputText id="empresa" value="#{candidatoBean.candidato.empresa}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel for="estado" value="Estado:" />
+                            <p:inputText id="estado" value="#{candidatoBean.candidato.estado}" />
                         </div>
                         <div class="p-d-flex p-jc-end p-mt-3">
                             <p:commandButton value="Cancelar" onclick="PF('dlgNuevo').hide()" styleClass="ui-button-secondary" />
@@ -104,26 +133,40 @@
                     </div>
                 </h:form>
             </p:dialog>
-
             <p:dialog widgetVar="dlgEditar" header="Editar Candidato" modal="true" width="500" showEffect="fade">
                 <h:form id="editForm">
                     <div class="p-field p-grid">
                         <div class="p-col-12">
-                            <p:outputLabel for="edit_nombre" value="Nombre:" />
-                            <p:inputText id="edit_nombre" value="#{candidatoBean.candidato.nombre}" required="true" />
+                            <p:outputLabel for="nombreEdit" value="Nombre:" />
+                            <p:inputText id="nombreEdit" value="#{candidatoBean.candidato.nombre}" required="true" />
                         </div>
                         <div class="p-col-12">
-                            <p:outputLabel for="edit_email" value="Email:" />
-                            <p:inputText id="edit_email" value="#{candidatoBean.candidato.email}" />
+                            <p:outputLabel for="apellidosEdit" value="Apellidos:" />
+                            <p:inputText id="apellidosEdit" value="#{candidatoBean.candidato.apellidos}" required="true" />
                         </div>
                         <div class="p-col-12">
-                            <p:outputLabel for="edit_telefono" value="Teléfono:" />
-                            <p:inputText id="edit_telefono" value="#{candidatoBean.candidato.telefono}" />
+                            <p:outputLabel for="emailEdit" value="Email:" />
+                            <p:inputText id="emailEdit" value="#{candidatoBean.candidato.email}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel for="telefonoEdit" value="Teléfono:" />
+                            <p:inputText id="telefonoEdit" value="#{candidatoBean.candidato.telefono}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel for="empresaEdit" value="Empresa:" />
+                            <p:inputText id="empresaEdit" value="#{candidatoBean.candidato.empresa}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel for="estadoEdit" value="Estado:" />
+                            <p:inputText id="estadoEdit" value="#{candidatoBean.candidato.estado}" />
                         </div>
                         <div class="p-d-flex p-jc-end p-mt-3">
                             <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide()" styleClass="ui-button-secondary" />
-                            <p:commandButton value="Guardar" action="#{candidatoBean.saveCandidato}" update=":candidatoForm"
-                                             oncomplete="PF('dlgEditar').hide()" styleClass="ui-button-success" />
+                            <p:commandButton value="Guardar Cambios"
+                                             action="#{candidatoBean.updateCandidato}"
+                                             update=":candidatoForm"
+                                             oncomplete="PF('dlgEditar').hide()"
+                                             styleClass="ui-button-success" />
                         </div>
                     </div>
                 </h:form>
