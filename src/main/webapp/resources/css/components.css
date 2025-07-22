@@ -387,3 +387,692 @@
     font-size: 0.8rem;
     font-weight: bold;
 }
+
+/* ========== FORMULARIOS MODERNOS ========== */
+
+/* Diálogo moderno */
+.modern-dialog .ui-dialog {
+    border-radius: 12px !important;
+    box-shadow: 0 20px 60px rgba(42, 75, 141, 0.15) !important;
+}
+
+.modern-dialog .ui-dialog-titlebar {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.2rem 1.5rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+}
+
+.modern-dialog .ui-dialog-titlebar-close {
+    color: white !important;
+    font-size: 1.2rem !important;
+}
+
+.modern-dialog .ui-dialog-content {
+    padding: 0 !important;
+    background: #fafbfc !important;
+}
+
+/* Contenedor del formulario */
+.form-container {
+    padding: 2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Secciones del formulario */
+.form-section {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+}
+
+.form-section:last-of-type {
+    margin-bottom: 2rem;
+}
+
+/* Títulos de sección */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--color-light);
+}
+
+.section-title i {
+    font-size: 1.2rem;
+    color: var(--color-secondary);
+}
+
+/* Grid del formulario */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Grupos de formulario */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Labels modernos */
+.form-label {
+    font-weight: 600 !important;
+    color: var(--text-dark) !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Inputs modernos */
+.modern-input.ui-inputfield {
+    padding: 0.75rem 1rem !important;
+    border: 2px solid #e9ecef !important;
+    border-radius: 8px !important;
+    font-size: 0.95rem !important;
+    transition: all 0.3s ease !important;
+    background: white !important;
+}
+
+.modern-input.ui-inputfield:focus {
+    border-color: var(--color-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(58, 111, 201, 0.1) !important;
+    outline: none !important;
+}
+
+.modern-input.ui-inputfield::placeholder {
+    color: #adb5bd !important;
+    font-style: italic;
+}
+
+/* Estilos para validación */
+.validation-message {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.validation-message .ui-message-error {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.validation-message .ui-message-error-icon {
+    font-size: 0.9rem;
+    color: var(--error);
+    margin: 0;
+}
+
+.validation-message .ui-message-error-detail {
+    color: var(--error);
+    font-weight: 500;
+}
+
+.modern-input.ui-state-error {
+    border-color: var(--error) !important;
+    background-color: rgba(239, 71, 111, 0.05) !important;
+}
+
+.modern-input.ui-state-error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 71, 111, 0.1) !important;
+}
+
+/* Indicador de campo requerido */
+.form-label::after {
+    content: "*";
+    color: var(--error);
+    margin-left: 0.25rem;
+    font-weight: bold;
+}
+
+/* Select modernos */
+.modern-select.ui-selectonemenu {
+    border-radius: 8px !important;
+}
+
+.modern-select .ui-selectonemenu-trigger {
+    border-radius: 0 8px 8px 0 !important;
+    border: 2px solid #e9ecef !important;
+    border-left: none !important;
+    background: white !important;
+}
+
+.modern-select .ui-selectonemenu-label {
+    padding: 0.75rem 1rem !important;
+    border: 2px solid #e9ecef !important;
+    border-right: none !important;
+    border-radius: 8px 0 0 8px !important;
+    font-size: 0.95rem !important;
+    background: white !important;
+}
+
+.modern-select.ui-state-focus .ui-selectonemenu-label,
+.modern-select.ui-state-focus .ui-selectonemenu-trigger {
+    border-color: var(--color-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(58, 111, 201, 0.1) !important;
+}
+
+/* File upload moderno */
+.file-upload-container {
+    padding: 1rem;
+    border: 2px dashed #e9ecef;
+    border-radius: 8px;
+    text-align: center;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.file-upload-container:hover {
+    border-color: var(--color-secondary);
+    background: rgba(58, 111, 201, 0.05);
+}
+
+.modern-file-upload .ui-fileupload-choose {
+    background: var(--gradient-secondary) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+}
+
+.modern-file-upload .ui-fileupload-choose:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3) !important;
+}
+
+.file-help {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--text-medium);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* Campos de solo lectura */
+.readonly-field {
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    color: var(--text-medium);
+    font-weight: 500;
+    display: block;
+    width: 100%;
+}
+
+/* Botones de acción */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: white;
+    border-top: 1px solid #e9ecef;
+    margin: 0 -2rem -2rem -2rem;
+    border-radius: 0 0 12px 12px;
+}
+
+.btn-cancel.ui-button {
+    background: #6c757d !important;
+    border: 2px solid #6c757d !important;
+    color: white !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-cancel.ui-button:hover {
+    background: #5a6268 !important;
+    border-color: #5a6268 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3) !important;
+}
+
+.btn-save.ui-button {
+    background: var(--gradient-primary) !important;
+    border: 2px solid var(--color-primary) !important;
+    color: white !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-save.ui-button:hover {
+    background: var(--gradient-secondary) !important;
+    border-color: var(--color-secondary) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(42, 75, 141, 0.3) !important;
+}
+
+/* ========== TABLA MODERNA ========== */
+
+/* Contenedor de la tabla */
+.modern-table-container {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+/* Header de la tabla */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.table-title i {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.table-title h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--text-dark);
+}
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Caja de búsqueda */
+.search-box {
+    position: relative;
+    min-width: 300px;
+}
+
+.search-box i {
+    color: var(--text-medium);
+}
+
+.search-box .modern-input {
+    width: 100%;
+    padding-left: 2.5rem !important;
+}
+
+/* Botón nuevo */
+.btn-new {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-new:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(42, 75, 141, 0.3) !important;
+}
+
+/* Botones de tabla */
+.table-buttons {
+    display: flex;
+    align-items: center;
+}
+
+/* Tabla moderna */
+.modern-datatable {
+    margin: 0 !important;
+}
+
+.modern-datatable .ui-datatable-header {
+    background: none !important;
+    border: none !important;
+    padding: 1rem 1.5rem !important;
+}
+
+.modern-datatable thead th {
+    background: #f8f9fa !important;
+    border: none !important;
+    padding: 1rem 1.5rem !important;
+    font-weight: 600 !important;
+    color: var(--text-dark) !important;
+    font-size: 0.95rem !important;
+    text-transform: none !important;
+    border-bottom: 2px solid #e9ecef !important;
+}
+
+/* Filtros de la tabla */
+.filter-container {
+    width: 100%;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.modern-filter.ui-inputtext {
+    width: 100% !important;
+    padding: 0.5rem 0.75rem !important;
+    padding-left: 2rem !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+    background: white !important;
+}
+
+.modern-filter.ui-selectonemenu {
+    width: 100% !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 6px !important;
+    background: white !important;
+}
+
+.modern-filter.ui-selectonemenu .ui-selectonemenu-label {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.9rem !important;
+}
+
+.modern-filter.ui-selectonemenu .ui-selectonemenu-trigger {
+    width: 2rem !important;
+    padding: 0 0.5rem !important;
+}
+
+/* Centrado de columnas */
+.text-center {
+    text-align: center !important;
+}
+
+.text-center .ui-column-title {
+    text-align: center !important;
+}
+
+.text-center .status-badge {
+    justify-content: center !important;
+    margin: 0 auto !important;
+}
+
+.text-center .action-buttons {
+    justify-content: center !important;
+}
+
+.modern-datatable thead th .ui-sortable-column-icon {
+    color: var(--text-medium) !important;
+    margin-left: 0.5rem !important;
+    font-size: 0.85rem !important;
+}
+
+.modern-datatable thead th.ui-state-active {
+    background: #f8f9fa !important;
+    color: var(--color-primary) !important;
+}
+
+.modern-datatable thead th.ui-state-active .ui-sortable-column-icon {
+    color: var(--color-primary) !important;
+}
+
+.modern-datatable tbody td {
+    padding: 1rem 1.5rem !important;
+    border: none !important;
+    border-bottom: 1px solid #e9ecef !important;
+}
+
+.modern-datatable .ui-datatable-even {
+    background: white !important;
+}
+
+.modern-datatable .ui-datatable-odd {
+    background: #fafbfc !important;
+}
+
+/* Columna de candidato */
+.candidate-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.candidate-avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.candidate-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.candidate-name {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.candidate-email {
+    color: var(--text-medium);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Columna de contacto */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-phone, .contact-company {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+/* Columna de estado */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background-color: rgba(6, 214, 160, 0.1);
+    color: #06d6a0;
+}
+
+.status-pending {
+    background-color: rgba(255, 209, 102, 0.1);
+    color: #ffd166;
+}
+
+.status-evaluating {
+    background-color: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+}
+
+.status-inactive {
+    background-color: rgba(239, 71, 111, 0.1);
+    color: #ef476f;
+}
+
+/* Columna de fechas */
+.dates-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.date-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+/* Columna de acciones */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-view, .btn-edit, .btn-delete {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border-radius: 8px !important;
+}
+
+.btn-view {
+    background: rgba(76, 201, 240, 0.1) !important;
+    border: none !important;
+    color: #4cc9f0 !important;
+}
+
+.btn-edit {
+    background: rgba(255, 209, 102, 0.1) !important;
+    border: none !important;
+    color: #ffd166 !important;
+}
+
+.btn-delete {
+    background: rgba(239, 71, 111, 0.1) !important;
+    border: none !important;
+    color: #ef476f !important;
+}
+
+.btn-view:hover, .btn-edit:hover, .btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Paginador */
+.modern-datatable .ui-paginator {
+    background: white !important;
+    border: none !important;
+    padding: 1rem !important;
+    border-top: 1px solid #e9ecef !important;
+}
+
+.modern-datatable .ui-paginator-page,
+.modern-datatable .ui-paginator-first,
+.modern-datatable .ui-paginator-prev,
+.modern-datatable .ui-paginator-next,
+.modern-datatable .ui-paginator-last {
+    border-radius: 8px !important;
+    margin: 0 0.25rem !important;
+    min-width: 2.5rem !important;
+    height: 2.5rem !important;
+}
+
+.modern-datatable .ui-paginator-page.ui-state-active {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+}
+
+.modern-datatable .ui-paginator-current {
+    color: var(--text-medium) !important;
+    font-weight: 500 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modern-dialog .ui-dialog {
+        width: 95% !important;
+        margin: 1rem !important;
+    }
+    
+    .form-container {
+        padding: 1rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+    
+    .form-actions .ui-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .table-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .table-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .search-box {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .btn-new {
+        width: 100%;
+    }
+
+    .candidate-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .action-buttons {
+        justify-content: center;
+    }
+}

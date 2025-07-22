@@ -1,9 +1,7 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="/templates/mainLayout.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    template="/templates/mainLayout.xhtml">
 
     <ui:define name="title">Gestión de Candidatos</ui:define>
 
@@ -16,157 +14,365 @@
 
     <ui:define name="content">
         <div class="card">
-            <h2>Gestión de Candidatos</h2>
-
             <h:form id="candidatoForm">
-                <!-- Barra de acciones -->
-                <div class="table-toolbar p-d-flex p-jc-between p-ai-center">
-<!--                    <p:inputText id="globalFilter" placeholder="Buscar..."-->
-<!--                                 styleClass="search-input"-->
-<!--                                 onkeyup="PF('candidatosTable').filter()" />-->
-
-                    <p:commandButton value="Nuevo Candidato"
-                                     icon="pi pi-plus"
-                                     styleClass="ui-button-success"
-                                     actionListener="#{candidatoBean.prepareNewCandidato}"
-                                     oncomplete="PF('dlgNuevo').show()"
-                                     update=":newForm" />
-                </div>
-
-                <!-- Tabla de candidatos -->
-                <p:dataTable id="candidatosTable" value="#{candidatoBean.candidatos}" var="item"
-                             paginator="true" paginatorPosition="bottom" rows="10" emptyMessage="No hay registros disponibles"
-                             filteredValue="#{candidatoBean.filteredCandidatos}" widgetVar="candidatosTable"
-                             rowHover="true" reflow="true">
-
-                    <p:column headerText="Nombre" sortBy="#{item.nombre}" filterBy="#{item.nombre}">
-                        <h:outputText value="#{item.nombre}" />
-                    </p:column>
-
-                    <p:column headerText="Apellidos" sortBy="#{item.apellidos}" filterBy="#{item.apellidos}">
-                        <h:outputText value="#{item.apellidos}" />
-                    </p:column>
-
-                    <p:column headerText="Email" sortBy="#{item.email}" filterBy="#{item.email}">
-                        <h:outputText value="#{item.email}" />
-                    </p:column>
-
-                    <p:column headerText="Teléfono" sortBy="#{item.telefono}" filterBy="#{item.telefono}">
-                        <h:outputText value="#{item.telefono}" />
-                    </p:column>
-
-                    <p:column headerText="Empresa" sortBy="#{item.empresa}" filterBy="#{item.empresa}">
-                        <h:outputText value="#{item.empresa}" />
-                    </p:column>
-
-                    <p:column headerText="Estado" sortBy="#{item.estado}" filterBy="#{item.estado}">
-                        <h:outputText value="#{item.estado}" />
-                    </p:column>
-
-                    <p:column headerText="Fecha de Creación" sortBy="#{item.fechaCreacion}">
-                        <h:outputText value="#{item.fechaCreacion}" />
-                    </p:column>
-
-                    <p:column headerText="Fecha de Actualización" sortBy="#{item.fechaActualizacion}">
-                        <h:outputText value="#{item.fechaActualizacion}" />
-                    </p:column>
-
-                    <p:column headerText="Acciones" exportable="false">
-                        <div class="action-buttons">
-                            <p:commandButton icon="pi pi-eye"
-                                             update=":viewForm"
-                                             oncomplete="PF('dlgVer').show()"
-                                             styleClass="ui-button-info">
-                                <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
-                            </p:commandButton>
-
-                            <p:commandButton icon="pi pi-pencil"
-                                             update=":editForm"
-                                             oncomplete="PF('dlgEditar').show()"
-                                             styleClass="ui-button-warning">
-                                <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
-                            </p:commandButton>
-
-                            <p:commandButton icon="pi pi-trash"
-                                             styleClass="ui-button-danger"
-                                             oncomplete="PF('confirmDelete').show()">
-                                <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
-                            </p:commandButton>
+                <div class="modern-table-container">
+                    <!-- Header de la tabla -->
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class="pi pi-users"></i>
+                            <h2>Gestión de Candidatos</h2>
                         </div>
-                    </p:column>
-                </p:dataTable>
+
+                        <div class="table-actions">
+                            <!-- Botones de acción -->
+                            <div class="table-buttons">
+                                <p:commandButton value="Nuevo Candidato" icon="pi pi-plus" styleClass="btn-new"
+                                    actionListener="#{candidatoBean.prepareNewCandidato}"
+                                    oncomplete="PF('dlgNuevo').show()" update=":newForm" />
+
+                                <p:commandButton value="Exportar CSV" icon="pi pi-file-excel" styleClass="btn-new"
+                                    style="margin-left: 0.5rem;">
+                                    <p:fileDownload value="#{candidatoBean.exportarCandidatos()}" />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de candidatos -->
+                    <p:dataTable id="candidatosTable" value="#{candidatoBean.candidatos}" var="item" paginator="true"
+                        paginatorPosition="bottom" rows="10" widgetVar="candidatosTable"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                        rowsPerPageTemplate="10,20,30" emptyMessage="No se encontraron candidatos"
+                        styleClass="modern-datatable" rowHover="true" reflow="true"
+                        filteredValue="#{candidatoBean.filteredCandidatos}">
+
+                        <!-- Columna de Candidato -->
+                        <p:column headerText="Candidato" sortBy="#{item.nombre}" filterBy="#{item.nombre}"
+                            filterMatchMode="contains" styleClass="candidate-column">
+                            <f:facet name="filter">
+                                <span class="p-input-icon-left filter-container">
+                                    <i class="pi pi-search" />
+                                    <p:inputText onkeyup="PF('candidatosTable').filter()" styleClass="modern-filter"
+                                        placeholder="Buscar por nombre..." />
+                                </span>
+                            </f:facet>
+                            <div class="candidate-info">
+                                <div class="candidate-avatar">
+                                    <c:set var="initials" value="#{item.nombre.charAt(0)}#{item.apellidos.charAt(0)}" />
+                                    #{initials.toUpperCase()}
+                                </div>
+                                <div class="candidate-details">
+                                    <span class="candidate-name">#{item.nombre} #{item.apellidos}</span>
+                                    <span class="candidate-email">
+                                        <i class="pi pi-envelope"></i> #{item.email}
+                                    </span>
+                                </div>
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Contacto -->
+                        <p:column headerText="Contacto" styleClass="contact-column">
+                            <div class="contact-info">
+                                <span class="contact-phone">
+                                    <i class="pi pi-phone"></i> #{item.telefono}
+                                </span>
+                                <span class="contact-company">
+                                    <i class="pi pi-building"></i> #{item.empresa}
+                                </span>
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Estado -->
+                        <p:column headerText="Estado" sortBy="#{item.estado}" filterBy="#{item.estado}"
+                            filterMatchMode="equals" styleClass="status-column text-center">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('candidatosTable').filter()" styleClass="modern-filter">
+                                    <f:selectItem itemLabel="Todos" itemValue="#{null}" />
+                                    <f:selectItem itemLabel="Activo" itemValue="Activo" />
+                                    <f:selectItem itemLabel="En Proceso" itemValue="En Proceso" />
+                                    <f:selectItem itemLabel="Evaluando" itemValue="Evaluando" />
+                                    <f:selectItem itemLabel="Inactivo" itemValue="Inactivo" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <div class="status-badge #{item.estado == 'Activo' ? 'status-active' : 
+                                                     item.estado == 'En Proceso' ? 'status-pending' :
+                                                     item.estado == 'Evaluando' ? 'status-evaluating' :
+                                                     'status-inactive'}">
+                                <i class="pi #{item.estado == 'Activo' ? 'pi-check-circle' : 
+                                             item.estado == 'En Proceso' ? 'pi-clock' :
+                                             item.estado == 'Evaluando' ? 'pi-star' :
+                                             'pi-times-circle'}"></i>
+                                #{item.estado}
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Fechas -->
+                        <p:column headerText="Fechas" styleClass="dates-column">
+                            <div class="dates-info">
+                                <span class="date-item">
+                                    <i class="pi pi-calendar-plus"></i>
+                                    <h:outputText value="#{item.fechaCreacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </span>
+                                <span class="date-item">
+                                    <i class="pi pi-calendar-minus"></i>
+                                    <h:outputText value="#{item.fechaActualizacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </span>
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Acciones -->
+                        <p:column headerText="Acciones" styleClass="actions-column text-center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-eye" update=":viewForm" oncomplete="PF('dlgVer').show()"
+                                    styleClass="btn-view" title="Ver detalles">
+                                    <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-pencil" update=":editForm"
+                                    oncomplete="PF('dlgEditar').show()" styleClass="btn-edit" title="Editar candidato">
+                                    <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" styleClass="btn-delete"
+                                    oncomplete="PF('confirmDelete').show()" title="Eliminar candidato">
+                                    <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+
+                        <!-- Personalización del paginador -->
+                        <f:facet name="paginatorLeft">
+                            <p:commandButton type="button" icon="pi pi-refresh" styleClass="ui-button-text" />
+                        </f:facet>
+
+                        <f:facet name="paginatorRight">
+                            <p:commandButton type="button" icon="pi pi-cloud-download" styleClass="ui-button-text" />
+                        </f:facet>
+                    </p:dataTable>
+                </div>
             </h:form>
 
             <!-- Diálogos para acciones -->
-            <p:dialog widgetVar="dlgNuevo" header="Nuevo Candidato" modal="true" width="500" showEffect="fade">
-                <h:form id="newForm">
-                    <div class="p-field p-grid">
-                        <div class="p-col-12">
-                            <p:outputLabel for="nombre" value="Nombre:" />
-                            <p:inputText id="nombre" value="#{candidatoBean.candidato.nombre}" required="true" />
+            <p:dialog widgetVar="dlgNuevo" header="✨ Nuevo Candidato" modal="true" width="700" showEffect="fade"
+                styleClass="modern-dialog" resizable="false">
+                <h:form id="newForm" styleClass="candidate-form">
+                    <div class="form-container">
+                        <!-- Información Personal -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-user"></i>
+                                Información Personal
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="nombre" value="Nombre *" styleClass="form-label" />
+                                    <p:inputText id="nombre" value="#{candidatoBean.candidato.nombre}" required="true"
+                                        requiredMessage="#{msg['validation.required']}" placeholder="Ingrese el nombre"
+                                        styleClass="modern-input">
+                                        <f:validator validatorId="nameValidator" />
+                                        <p:ajax event="blur" update="nombreMsg" />
+                                    </p:inputText>
+                                    <p:message for="nombre" id="nombreMsg" styleClass="validation-message" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="apellidos" value="Apellidos *" styleClass="form-label" />
+                                    <p:inputText id="apellidos" value="#{candidatoBean.candidato.apellidos}"
+                                        required="true" requiredMessage="#{msg['validation.required']}"
+                                        placeholder="Ingrese los apellidos" styleClass="modern-input">
+                                        <f:validator validatorId="nameValidator" />
+                                        <p:ajax event="blur" update="apellidosMsg" />
+                                    </p:inputText>
+                                    <p:message for="apellidos" id="apellidosMsg" styleClass="validation-message" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="apellidos" value="Apellidos:" />
-                            <p:inputText id="apellidos" value="#{candidatoBean.candidato.apellidos}" required="true" />
+
+                        <!-- Información de Contacto -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-phone"></i>
+                                Información de Contacto
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="email" value="Correo Electrónico" styleClass="form-label" />
+                                    <p:inputText id="email" value="#{candidatoBean.candidato.email}"
+                                        placeholder="ejemplo@correo.com" styleClass="modern-input">
+                                        <f:validator validatorId="emailValidator" />
+                                        <p:ajax event="blur" update="emailMsg" />
+                                    </p:inputText>
+                                    <p:message for="email" id="emailMsg" styleClass="validation-message" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="telefono" value="Teléfono" styleClass="form-label" />
+                                    <p:inputText id="telefono" value="#{candidatoBean.candidato.telefono}"
+                                        placeholder="+1234567890" styleClass="modern-input">
+                                        <f:validator validatorId="phoneValidator" />
+                                        <p:ajax event="blur" update="telefonoMsg" />
+                                    </p:inputText>
+                                    <p:message for="telefono" id="telefonoMsg" styleClass="validation-message" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="email" value="Email:" />
-                            <p:inputText id="email" value="#{candidatoBean.candidato.email}" />
+
+                        <!-- Información Profesional -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-briefcase"></i>
+                                Información Profesional
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="empresa" value="Empresa Actual" styleClass="form-label" />
+                                    <p:inputText id="empresa" value="#{candidatoBean.candidato.empresa}"
+                                        placeholder="Nombre de la empresa" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="estado" value="Estado" styleClass="form-label" />
+                                    <p:selectOneMenu id="estado" value="#{candidatoBean.candidato.estado}"
+                                        styleClass="modern-select">
+                                        <f:selectItem itemLabel="Seleccione un estado" itemValue="" />
+                                        <f:selectItem itemLabel="🟢 Activo" itemValue="Activo" />
+                                        <f:selectItem itemLabel="🟡 En Proceso" itemValue="En Proceso" />
+                                        <f:selectItem itemLabel="🔵 Evaluando" itemValue="Evaluando" />
+                                        <f:selectItem itemLabel="⭕ Inactivo" itemValue="Inactivo" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="telefono" value="Teléfono:" />
-                            <p:inputText id="telefono" value="#{candidatoBean.candidato.telefono}" />
+
+                        <!-- Archivos Adjuntos -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-file"></i>
+                                Documentos
+                            </h3>
+                            <div class="form-group file-upload-container">
+                                <p:outputLabel for="archivo" value="CV / Hoja de Vida" styleClass="form-label" />
+                                <p:fileUpload id="archivo" value="#{candidatoBean.archivoAdjunto}" mode="simple"
+                                    skinSimple="true" label="Seleccionar Archivo" chooseIcon="pi pi-upload"
+                                    styleClass="modern-file-upload" />
+                                <small class="file-help">Formatos permitidos: PDF, DOC, DOCX (Máx. 5MB)</small>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="empresa" value="Empresa:" />
-                            <p:inputText id="empresa" value="#{candidatoBean.candidato.empresa}" />
-                        </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="estado" value="Estado:" />
-                            <p:inputText id="estado" value="#{candidatoBean.candidato.estado}" />
-                        </div>
-                        <div class="p-d-flex p-jc-end p-mt-3">
-                            <p:commandButton value="Cancelar" onclick="PF('dlgNuevo').hide()" styleClass="ui-button-secondary" />
-                            <p:commandButton value="Guardar" action="#{candidatoBean.saveCandidato}" update=":candidatoForm"
-                                             oncomplete="PF('dlgNuevo').hide()" styleClass="ui-button-success" />
+
+                        <!-- Botones de acción -->
+                        <div class="form-actions">
+                            <p:commandButton value="Cancelar" onclick="PF('dlgNuevo').hide(); return false;"
+                                styleClass="btn-cancel" icon="pi pi-times" />
+                            <p:commandButton value="Guardar Candidato" action="#{candidatoBean.saveCandidato}"
+                                update=":candidatoForm" oncomplete="PF('dlgNuevo').hide()" styleClass="btn-save"
+                                icon="pi pi-check" />
                         </div>
                     </div>
                 </h:form>
             </p:dialog>
-            <p:dialog widgetVar="dlgEditar" header="Editar Candidato" modal="true" width="500" showEffect="fade">
-                <h:form id="editForm">
-                    <div class="p-field p-grid">
-                        <div class="p-col-12">
-                            <p:outputLabel for="nombreEdit" value="Nombre:" />
-                            <p:inputText id="nombreEdit" value="#{candidatoBean.candidato.nombre}" required="true" />
+            <p:dialog widgetVar="dlgEditar" header="✏️ Editar Candidato" modal="true" width="700" showEffect="fade"
+                styleClass="modern-dialog" resizable="false">
+                <h:form id="editForm" styleClass="candidate-form">
+                    <div class="form-container">
+                        <!-- Información Personal -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-user"></i>
+                                Información Personal
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="nombreEdit" value="Nombre *" styleClass="form-label" />
+                                    <p:inputText id="nombreEdit" value="#{candidatoBean.candidato.nombre}"
+                                        required="true" placeholder="Ingrese el nombre" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="apellidosEdit" value="Apellidos *" styleClass="form-label" />
+                                    <p:inputText id="apellidosEdit" value="#{candidatoBean.candidato.apellidos}"
+                                        required="true" placeholder="Ingrese los apellidos" styleClass="modern-input" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="apellidosEdit" value="Apellidos:" />
-                            <p:inputText id="apellidosEdit" value="#{candidatoBean.candidato.apellidos}" required="true" />
+
+                        <!-- Información de Contacto -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-phone"></i>
+                                Información de Contacto
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="emailEdit" value="Correo Electrónico" styleClass="form-label" />
+                                    <p:inputText id="emailEdit" value="#{candidatoBean.candidato.email}"
+                                        placeholder="ejemplo@correo.com" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="telefonoEdit" value="Teléfono" styleClass="form-label" />
+                                    <p:inputText id="telefonoEdit" value="#{candidatoBean.candidato.telefono}"
+                                        placeholder="+1234567890" styleClass="modern-input" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="emailEdit" value="Email:" />
-                            <p:inputText id="emailEdit" value="#{candidatoBean.candidato.email}" />
+
+                        <!-- Información Profesional -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-briefcase"></i>
+                                Información Profesional
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="empresaEdit" value="Empresa Actual" styleClass="form-label" />
+                                    <p:inputText id="empresaEdit" value="#{candidatoBean.candidato.empresa}"
+                                        placeholder="Nombre de la empresa" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="estadoEdit" value="Estado" styleClass="form-label" />
+                                    <p:selectOneMenu id="estadoEdit" value="#{candidatoBean.candidato.estado}"
+                                        styleClass="modern-select">
+                                        <f:selectItem itemLabel="Seleccione un estado" itemValue="" />
+                                        <f:selectItem itemLabel="🟢 Activo" itemValue="Activo" />
+                                        <f:selectItem itemLabel="🟡 En Proceso" itemValue="En Proceso" />
+                                        <f:selectItem itemLabel="🔵 Evaluando" itemValue="Evaluando" />
+                                        <f:selectItem itemLabel="⭕ Inactivo" itemValue="Inactivo" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="telefonoEdit" value="Teléfono:" />
-                            <p:inputText id="telefonoEdit" value="#{candidatoBean.candidato.telefono}" />
+
+                        <!-- Información adicional -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-info-circle"></i>
+                                Información Adicional
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel value="Fecha de Creación" styleClass="form-label" />
+                                    <h:outputText value="#{candidatoBean.candidato.fechaCreacion}"
+                                        styleClass="readonly-field">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                    </h:outputText>
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel value="Última Actualización" styleClass="form-label" />
+                                    <h:outputText value="#{candidatoBean.candidato.fechaActualizacion}"
+                                        styleClass="readonly-field">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                    </h:outputText>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="empresaEdit" value="Empresa:" />
-                            <p:inputText id="empresaEdit" value="#{candidatoBean.candidato.empresa}" />
-                        </div>
-                        <div class="p-col-12">
-                            <p:outputLabel for="estadoEdit" value="Estado:" />
-                            <p:inputText id="estadoEdit" value="#{candidatoBean.candidato.estado}" />
-                        </div>
-                        <div class="p-d-flex p-jc-end p-mt-3">
-                            <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide()" styleClass="ui-button-secondary" />
-                            <p:commandButton value="Guardar Cambios"
-                                             action="#{candidatoBean.updateCandidato}"
-                                             update=":candidatoForm"
-                                             oncomplete="PF('dlgEditar').hide()"
-                                             styleClass="ui-button-success" />
+
+                        <!-- Botones de acción -->
+                        <div class="form-actions">
+                            <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide(); return false;"
+                                styleClass="btn-cancel" icon="pi pi-times" />
+                            <p:commandButton value="Actualizar Candidato" action="#{candidatoBean.saveCandidato}"
+                                update=":candidatoForm" oncomplete="PF('dlgEditar').hide()" styleClass="btn-save"
+                                icon="pi pi-check" />
                         </div>
                     </div>
                 </h:form>
@@ -194,11 +400,11 @@
             </p:dialog>
 
             <p:confirmDialog widgetVar="confirmDelete" message="¿Está seguro que desea eliminar este candidato?"
-                             header="Confirmación" severity="warn">
+                header="Confirmación" severity="warn">
                 <div class="p-d-flex p-jc-end">
                     <p:commandButton value="No" onclick="PF('confirmDelete').hide()" styleClass="ui-button-secondary" />
                     <p:commandButton value="Sí" action="#{candidatoBean.deleteCandidato}" update=":candidatoForm"
-                                     oncomplete="PF('confirmDelete').hide()" styleClass="ui-button-danger" />
+                        oncomplete="PF('confirmDelete').hide()" styleClass="ui-button-danger" />
                 </div>
             </p:confirmDialog>
         </div>

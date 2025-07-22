@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.StreamedContent;
+import com.talentflow.service.ExportService;
 
 @Named
 @ViewScoped
@@ -20,6 +22,9 @@ public class CandidatoBean implements Serializable {
 
     @Inject
     private CandidatoService candidatoService;
+
+    @Inject
+    private ExportService exportService;
 
     private List<Candidato> candidatos;
     private List<Candidato> filteredCandidatos;
@@ -106,10 +111,11 @@ public class CandidatoBean implements Serializable {
         // Aquí iría el código para guardar físicamente el archivo
         // Por ejemplo:
         // try (InputStream input = archivo.getInputStream();
-        //      OutputStream output = new FileOutputStream(new File("/ruta/fisica/" + nombreArchivo))) {
-        //     IOUtils.copy(input, output);
+        // OutputStream output = new FileOutputStream(new File("/ruta/fisica/" +
+        // nombreArchivo))) {
+        // IOUtils.copy(input, output);
         // } catch (IOException e) {
-        //     throw new RuntimeException("Error al guardar el archivo", e);
+        // throw new RuntimeException("Error al guardar el archivo", e);
         // }
 
         return ruta;
@@ -154,5 +160,9 @@ public class CandidatoBean implements Serializable {
 
     public void setArchivoAdjunto(UploadedFile archivoAdjunto) {
         this.archivoAdjunto = archivoAdjunto;
+    }
+
+    public StreamedContent exportarCandidatos() {
+        return exportService.exportarCandidatosCSV(candidatos);
     }
 }
