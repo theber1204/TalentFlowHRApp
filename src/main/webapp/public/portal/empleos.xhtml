@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal de Empleos - TalentFlowHR</title>
+
+    <!-- Estilos -->
+    <h:outputStylesheet library="css" name="variables.css" />
+    <h:outputStylesheet library="css" name="portal.css" />
+    <h:outputStylesheet library="css" name="base.css" />
+    <h:outputStylesheet library="css" name="components.css" />
+    <h:outputStylesheet library="css" name="landing.css" />
+    <h:outputStylesheet library="primefaces-saga" name="theme.css" />
+    <h:outputStylesheet library="css" name="primefixes.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</h:head>
+
+<h:body styleClass="portal-body">
+    <p:growl id="growl" showDetail="false" life="3000" />
+
+    <!-- Header -->
+    <header class="portal-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">TalentFlowHR</a>
+                <h1>Portal de Empleos</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="portal-main">
+        <div class="container">
+            <h:form id="jobsForm">
+                <!-- Lista de vacantes -->
+                <div class="jobs-grid">
+                    <ui:repeat value="#{portalEmpleosBean.vacantes}" var="vacante">
+                        <div class="job-card">
+                            <div class="job-header">
+                                <h2 class="job-title">#{vacante.titulo}</h2>
+                                <span class="job-location">
+                                    <i class="pi pi-map-marker"></i>
+                                    #{vacante.ubicacion}
+                                </span>
+                            </div>
+
+                            <div class="job-body">
+                                <p class="job-description">#{vacante.descripcion}</p>
+
+                                <div class="job-details">
+                                    <span class="detail-item">
+                                        <i class="pi pi-dollar"></i>
+                                        #{vacante.salario}
+                                    </span>
+                                    <span class="detail-item">
+                                        <i class="pi pi-briefcase"></i>
+                                        #{vacante.tipoContrato}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="job-footer">
+                                <p:commandButton value="Postular" icon="pi pi-send" styleClass="btn-apply"
+                                    actionListener="#{portalEmpleosBean.preparePostular(vacante)}"
+                                    oncomplete="PF('dlgPostular').show()" update=":postularForm" />
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </h:form>
+        </div>
+    </main>
+
+    <!-- Diálogo de postulación -->
+    <p:dialog widgetVar="dlgPostular" header="Postular a: #{portalEmpleosBean.vacanteSeleccionada.titulo}" modal="true"
+        width="600" showEffect="fade" styleClass="modern-dialog" resizable="false">
+        <h:form id="postularForm" styleClass="modern-form">
+            <div class="form-container">
+                <!-- Información Personal -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="pi pi-user"></i>
+                        Información Personal
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <p:outputLabel for="nombre" value="Nombre *" styleClass="form-label" />
+                            <p:inputText id="nombre" value="#{portalEmpleosBean.postulante.nombre}" required="true"
+                                requiredMessage="#{msg['validation.required']}" placeholder="Ingrese su nombre"
+                                styleClass="modern-input" />
+                            <p:message for="nombre" />
+                        </div>
+
+                        <div class="form-group">
+                            <p:outputLabel for="apellidos" value="Apellidos *" styleClass="form-label" />
+                            <p:inputText id="apellidos" value="#{portalEmpleosBean.postulante.apellidos}"
+                                required="true" requiredMessage="#{msg['validation.required']}"
+                                placeholder="Ingrese sus apellidos" styleClass="modern-input" />
+                            <p:message for="apellidos" />
+                        </div>
+
+                        <div class="form-group">
+                            <p:outputLabel for="email" value="Email *" styleClass="form-label" />
+                            <p:inputText id="email" value="#{portalEmpleosBean.postulante.email}" required="true"
+                                requiredMessage="#{msg['validation.required']}" placeholder="ejemplo@correo.com"
+                                styleClass="modern-input">
+                                <f:validator validatorId="emailValidator" />
+                            </p:inputText>
+                            <p:message for="email" />
+                        </div>
+
+                        <div class="form-group">
+                            <p:outputLabel for="telefono" value="Teléfono" styleClass="form-label" />
+                            <p:inputText id="telefono" value="#{portalEmpleosBean.postulante.telefono}"
+                                placeholder="+51 999999999" styleClass="modern-input">
+                                <f:validator validatorId="phoneValidator" />
+                            </p:inputText>
+                            <p:message for="telefono" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documentos -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="pi pi-file"></i>
+                        Documentos
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <p:outputLabel for="cv" value="CV / Hoja de Vida *" styleClass="form-label" />
+                            <p:inputTextarea id="cv" value="#{portalEmpleosBean.postulante.cv}" required="true"
+                                requiredMessage="#{msg['validation.required']}"
+                                placeholder="Pegue aquí el enlace a su CV (Google Drive, Dropbox, etc.)"
+                                styleClass="modern-input" rows="2" />
+                            <p:message for="cv" />
+                        </div>
+
+                        <div class="form-group">
+                            <p:outputLabel for="cartaPresentacion" value="Carta de Presentación"
+                                styleClass="form-label" />
+                            <p:inputTextarea id="cartaPresentacion"
+                                value="#{portalEmpleosBean.postulante.cartaPresentacion}"
+                                placeholder="Cuéntanos por qué te interesa esta posición..." styleClass="modern-input"
+                                rows="4" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <p:commandButton value="Cancelar" onclick="PF('dlgPostular').hide(); return false;"
+                        styleClass="btn-cancel" icon="pi pi-times" />
+
+                    <p:commandButton value="Enviar Postulación" action="#{portalEmpleosBean.postular}" update=":growl"
+                        oncomplete="if (!args.validationFailed) PF('dlgPostular').hide()" styleClass="btn-save"
+                        icon="pi pi-send" />
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <!-- Footer -->
+    <footer class="portal-footer">
+        <div class="container">
+            <p>© 2025 TalentFlowHR. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</h:body>
+
+</html>

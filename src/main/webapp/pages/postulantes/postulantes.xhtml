@@ -1,0 +1,264 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="/templates/mainLayout.xhtml">
+
+    <ui:define name="title">Gestión de Postulantes</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:breadCrumb>
+            <p:menuitem value="Home" url="/dashboard" />
+            <p:menuitem value="Postulantes" url="#" />
+        </p:breadCrumb>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h:form id="postulanteForm">
+                <div class="modern-table-container">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class="pi pi-users"></i>
+                            <h2>Gestión de Postulantes</h2>
+                        </div>
+
+                        <div class="table-actions">
+                            <!-- Botones de acción -->
+                            <div class="table-buttons">
+                                <p:commandButton value="Exportar CSV" icon="pi pi-file-excel" styleClass="btn-new" style="margin-left: 0.5rem;">
+                                    <p:fileDownload value="#{postulanteBean.getPostulantesCSV}" />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h:panelGroup rendered="#{empty postulanteBean.postulantes}">
+                        <div class="ui-message ui-messages-info ui-corner-all" style="margin-bottom:1em;">
+                            <i class="pi pi-info-circle" style="margin-right:5px;"></i>
+                            No se encontraron postulantes en la base de datos.
+                        </div>
+                    </h:panelGroup>
+
+                    <p:dataTable id="postulantesTable" value="#{postulanteBean.postulantes}" var="item" paginator="true"
+                        paginatorPosition="bottom" rows="10" widgetVar="postulantesTable"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                        rowsPerPageTemplate="10,20,30" emptyMessage="No se encontraron postulantes"
+                        styleClass="modern-datatable" rowHover="true" reflow="true"
+                        filteredValue="#{postulanteBean.filteredPostulantes}">
+
+                        <p:column headerText="Nombre" sortBy="#{item.nombre}" filterBy="#{item.nombre}"
+                            filterMatchMode="contains">
+                            <f:facet name="filter">
+                                <span class="p-input-icon-left filter-container">
+                                    <i class="pi pi-search" />
+                                    <p:inputText onkeyup="PF('postulantesTable').filter()" styleClass="modern-filter"
+                                        placeholder="Buscar por nombre..." />
+                                </span>
+                            </f:facet>
+                            <div class="candidate-info">
+                                <div class="candidate-avatar">
+                                    <c:set var="initials" value="#{item.nombre.charAt(0)}#{item.apellidos.charAt(0)}" />
+                                    #{initials.toUpperCase()}
+                                </div>
+                                <div class="candidate-details">
+                                    <span class="candidate-name">#{item.nombre} #{item.apellidos}</span>
+                                    <span class="candidate-email">
+                                        <i class="pi pi-envelope"></i> #{item.email}
+                                    </span>
+                                </div>
+                            </div>
+                        </p:column>
+
+                        <p:column headerText="Teléfono" styleClass="contact-column">
+                            <span class="contact-phone">
+                                <i class="pi pi-phone"></i> #{item.telefono}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Vacante" styleClass="vacante-column">
+                            <span class="vacante-title">
+                                <i class="pi pi-briefcase"></i> #{item.vacante.titulo}
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Estado" sortBy="#{item.estado}" filterBy="#{item.estado}"
+                            filterMatchMode="equals" styleClass="status-column text-center">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('postulantesTable').filter()" styleClass="modern-filter">
+                                    <f:selectItem itemLabel="Todos" itemValue="#{null}" />
+                                    <f:selectItem itemLabel="Activo" itemValue="Activo" />
+                                    <f:selectItem itemLabel="En Proceso" itemValue="En Proceso" />
+                                    <f:selectItem itemLabel="Evaluando" itemValue="Evaluando" />
+                                    <f:selectItem itemLabel="Inactivo" itemValue="Inactivo" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <div class="status-badge #{item.estado == 'Activo' ? 'status-active' :
+                                                     item.estado == 'En Proceso' ? 'status-pending' :
+                                                     item.estado == 'Evaluando' ? 'status-evaluating' :
+                                                     'status-inactive'}">
+                                <i class="pi #{item.estado == 'Activo' ? 'pi-check-circle' :
+                                             item.estado == 'En Proceso' ? 'pi-clock' :
+                                             item.estado == 'Evaluando' ? 'pi-star' :
+                                             'pi-times-circle'}"></i>
+                                #{item.estado}
+                            </div>
+                        </p:column>
+
+                        <p:column headerText="Fecha Postulación" styleClass="dates-column">
+                            <span class="date-item">
+                                <i class="pi pi-calendar-plus"></i>
+                                <h:outputText value="#{item.fechaPostulacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </span>
+                        </p:column>
+
+                        <p:column headerText="Acciones" styleClass="actions-column text-center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-eye" update=":viewForm" oncomplete="PF('dlgVer').show()"
+                                    styleClass="btn-view" title="Ver detalles">
+                                    <f:setPropertyActionListener value="#{item}" target="#{postulanteBean.postulanteSeleccionado}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-pencil" update=":editForm"
+                                    oncomplete="PF('dlgEditar').show()" styleClass="btn-edit" title="Editar postulante">
+                                    <f:setPropertyActionListener value="#{item}" target="#{postulanteBean.postulanteSeleccionado}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" styleClass="btn-delete"
+                                    oncomplete="PF('confirmDelete').show()" title="Eliminar postulante">
+                                    <f:setPropertyActionListener value="#{item}" target="#{postulanteBean.postulanteSeleccionado}" />
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+
+                        <f:facet name="paginatorLeft">
+                            <p:commandButton type="button" icon="pi pi-refresh" styleClass="ui-button-text" />
+                        </f:facet>
+                        <f:facet name="paginatorRight">
+                            <p:commandButton type="button" icon="pi pi-cloud-download" styleClass="ui-button-text" />
+                        </f:facet>
+                    </p:dataTable>
+                </div>
+            </h:form>
+
+            <p:dialog widgetVar="dlgEditar" header="✏️ Editar Postulante" modal="true" width="700" showEffect="fade"
+                styleClass="modern-dialog" resizable="false">
+                <h:form id="editForm" styleClass="modern-form">
+                    <div class="form-container">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-user"></i>
+                                Información Personal
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="nombreEdit" value="Nombre *" styleClass="form-label" />
+                                    <p:inputText id="nombreEdit" value="#{postulanteBean.postulanteSeleccionado.nombre}"
+                                        required="true" placeholder="Ingrese el nombre" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="apellidosEdit" value="Apellidos *" styleClass="form-label" />
+                                    <p:inputText id="apellidosEdit" value="#{postulanteBean.postulanteSeleccionado.apellidos}"
+                                        required="true" placeholder="Ingrese los apellidos" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-phone"></i>
+                                Información de Contacto
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="emailEdit" value="Correo Electrónico" styleClass="form-label" />
+                                    <p:inputText id="emailEdit" value="#{postulanteBean.postulanteSeleccionado.email}"
+                                        placeholder="ejemplo@correo.com" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="telefonoEdit" value="Teléfono" styleClass="form-label" />
+                                    <p:inputText id="telefonoEdit" value="#{postulanteBean.postulanteSeleccionado.telefono}"
+                                        placeholder="+1234567890" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-briefcase"></i>
+                                Vacante
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="vacanteEdit" value="Vacante" styleClass="form-label" />
+                                    <p:inputText id="vacanteEdit" value="#{postulanteBean.postulanteSeleccionado.vacante.titulo}"
+                                        placeholder="Vacante" styleClass="modern-input" disabled="true" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="estadoEdit" value="Estado" styleClass="form-label" />
+                                    <p:selectOneMenu id="estadoEdit" value="#{postulanteBean.postulanteSeleccionado.estado}"
+                                        styleClass="modern-select">
+                                        <f:selectItem itemLabel="Seleccione un estado" itemValue="" />
+                                        <f:selectItem itemLabel="🟢 Activo" itemValue="Activo" />
+                                        <f:selectItem itemLabel="🟡 En Proceso" itemValue="En Proceso" />
+                                        <f:selectItem itemLabel="🔵 Evaluando" itemValue="Evaluando" />
+                                        <f:selectItem itemLabel="⭕ Inactivo" itemValue="Inactivo" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide(); return false;"
+                                styleClass="btn-cancel" icon="pi pi-times" />
+                            <p:commandButton value="Actualizar Postulante" action="#{postulanteBean.savePostulante}"
+                                update=":postulanteForm" oncomplete="PF('dlgEditar').hide()" styleClass="btn-save"
+                                icon="pi pi-check" />
+                        </div>
+                    </div>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog widgetVar="dlgVer" header="Detalles del Postulante" modal="true" width="500" showEffect="fade">
+                <h:form id="viewForm">
+                    <div class="p-field p-grid">
+                        <div class="p-col-12">
+                            <p:outputLabel value="Nombre:" />
+                            <h:outputText value="#{postulanteBean.postulanteSeleccionado.nombre}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Email:" />
+                            <h:outputText value="#{postulanteBean.postulanteSeleccionado.email}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Teléfono:" />
+                            <h:outputText value="#{postulanteBean.postulanteSeleccionado.telefono}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Vacante:" />
+                            <h:outputText value="#{postulanteBean.postulanteSeleccionado.vacante.titulo}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Estado:" />
+                            <h:outputText value="#{postulanteBean.postulanteSeleccionado.estado}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Fecha Postulación:" />
+                            <h:outputText value="#{postulanteBean.postulanteSeleccionado.fechaPostulacion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </div>
+                    </div>
+                </h:form>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="confirmDelete" message="¿Está seguro que desea eliminar este postulante?"
+                header="Confirmación" severity="warn">
+                <div class="p-d-flex p-jc-end">
+                    <p:commandButton value="No" onclick="PF('confirmDelete').hide()" styleClass="ui-button-secondary" />
+                    <p:commandButton value="Sí" action="#{postulanteBean.deletePostulante}" update=":postulanteForm"
+                        oncomplete="PF('confirmDelete').hide()" styleClass="ui-button-danger" />
+                </div>
+            </p:confirmDialog>
+        </div>
+    </ui:define>
+</ui:composition>

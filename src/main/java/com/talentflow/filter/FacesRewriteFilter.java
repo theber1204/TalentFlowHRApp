@@ -20,9 +20,10 @@ public class FacesRewriteFilter implements Filter {
         urlMappings.put("/dashboard", "/pages/dashboard.xhtml");
         urlMappings.put("/login", "/index.xhtml");
         urlMappings.put("/perfil", "/pages/perfil.xhtml");
-        urlMappings.put("/vacantes", "/pages/vacantes.xhtml");
+        urlMappings.put("/vacantes", "/pages/vacantes/vacantes.xhtml");
         urlMappings.put("/vacantes/crear", "/pages/vacantes/crear.xhtml");
         urlMappings.put("/candidatos", "/pages/candidatos/candidatos.xhtml");
+        urlMappings.put("/postulantes", "/pages/postulantes/postulantes.xhtml");
         urlMappings.put("/registro", "/registro.xhtml");
         urlMappings.put("/registro-exitoso", "/registro-exitoso.xhtml");
 

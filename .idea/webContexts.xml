@@ -5,6 +5,8 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/auth-layout.xhtml" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/index.xhtml" value="file://$PROJECT_DIR$/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/pages/candidatos/candidatos.xhtml" value="file://$PROJECT_DIR$/src/main/webapp/pages/candidatos" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/pages/vacantes/vacantes.xhtml" value="file://$PROJECT_DIR$/src/main/webapp/pages/vacantes" />
       </map>
     </option>
   </component>
