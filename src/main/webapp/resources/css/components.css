@@ -237,6 +237,7 @@
     background: var(--color-white);
     z-index: 1000;
 }
+
 /* Estilos para la tabla de datos */
 .table-toolbar {
     display: flex;
@@ -265,6 +266,7 @@
 .action-column .ui-button {
     margin: 0 3px;
 }
+
 .action-buttons {
     display: flex;
     justify-content: center;
@@ -896,7 +898,8 @@
     gap: 0.5rem;
 }
 
-.contact-phone, .contact-company {
+.contact-phone,
+.contact-company {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -956,7 +959,9 @@
     gap: 0.5rem;
 }
 
-.btn-view, .btn-edit, .btn-delete {
+.btn-view,
+.btn-edit,
+.btn-delete {
     width: 2.5rem !important;
     height: 2.5rem !important;
     border-radius: 8px !important;
@@ -980,7 +985,9 @@
     color: #ef476f !important;
 }
 
-.btn-view:hover, .btn-edit:hover, .btn-delete:hover {
+.btn-view:hover,
+.btn-edit:hover,
+.btn-delete:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
@@ -1020,27 +1027,27 @@
         width: 95% !important;
         margin: 1rem !important;
     }
-    
+
     .form-container {
         padding: 1rem;
     }
-    
+
     .form-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .form-section {
         padding: 1rem;
         margin-bottom: 1rem;
     }
-    
+
     .form-actions {
         flex-direction: column;
         gap: 0.75rem;
         padding: 1rem;
     }
-    
+
     .form-actions .ui-button {
         width: 100%;
         justify-content: center;
@@ -1075,4 +1082,274 @@
     .action-buttons {
         justify-content: center;
     }
+}
+
+/* Estilos generales para tablas y listas */
+.data-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.data-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.data-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.data-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.data-subtitle {
+    color: var(--text-medium);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.data-subtitle i {
+    color: var(--color-secondary);
+    font-size: 0.9rem;
+}
+
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+.info-item i {
+    color: var(--color-secondary);
+    font-size: 1rem;
+}
+
+/* Estilos para formularios modernos */
+.modern-form .form-section {
+    margin-bottom: 2rem;
+}
+
+.modern-form .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.modern-form .section-title i {
+    color: var(--color-primary);
+}
+
+.modern-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.modern-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modern-form .form-label {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.modern-form .modern-input,
+.modern-form .modern-select,
+.modern-form .modern-calendar input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.modern-form .modern-input:focus,
+.modern-form .modern-select:focus,
+.modern-form .modern-calendar input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.modern-form .modern-toggle {
+    width: 100%;
+    padding: 1rem;
+}
+
+.modern-form .modern-toggle.ui-state-active {
+    background: var(--success) !important;
+    border-color: var(--success) !important;
+}
+
+/* Estilos para detalles */
+.detail-view {
+    padding: 1.5rem;
+}
+
+.detail-view .detail-header {
+    margin-bottom: 2rem;
+}
+
+.detail-view .detail-title {
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.detail-view .detail-section {
+    margin-bottom: 2rem;
+}
+
+.detail-view .detail-subtitle {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.detail-view .detail-content {
+    color: var(--text-medium);
+    line-height: 1.6;
+}
+
+.detail-view .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.detail-view .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detail-view .detail-label {
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.detail-view .detail-value {
+    color: var(--text-medium);
+}
+
+/* Estados y badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.status-badge i {
+    font-size: 1rem;
+}
+
+.status-active {
+    background-color: var(--success-light);
+    color: var(--success);
+}
+
+.status-inactive {
+    background-color: var(--danger-light);
+    color: var(--danger);
+}
+
+.status-pending {
+    background-color: var(--warning-light);
+    color: var(--warning);
+}
+
+.status-evaluating {
+    background-color: var(--info-light);
+    color: var(--info);
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn-view,
+.btn-edit,
+.btn-delete {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border-radius: 50% !important;
+}
+
+.btn-view {
+    background-color: var(--info) !important;
+    border-color: var(--info) !important;
+}
+
+.btn-edit {
+    background-color: var(--warning) !important;
+    border-color: var(--warning) !important;
+}
+
+.btn-delete {
+    background-color: var(--danger) !important;
+    border-color: var(--danger) !important;
+}
+
+/* Variables CSS */
+:root {
+    --border-color: #e9ecef;
+    --border-radius: 0.5rem;
+
+    --color-primary: #3B82F6;
+    --color-primary-light: rgba(59, 130, 246, 0.1);
+
+    --success: #22C55E;
+    --success-light: rgba(34, 197, 94, 0.1);
+
+    --danger: #EF4444;
+    --danger-light: rgba(239, 68, 68, 0.1);
+
+    --warning: #F59E0B;
+    --warning-light: rgba(245, 158, 11, 0.1);
+
+    --info: #3B82F6;
+    --info-light: rgba(59, 130, 246, 0.1);
+
+    --text-dark: #1F2937;
+    --text-medium: #6B7280;
+    --text-light: #9CA3AF;
 }

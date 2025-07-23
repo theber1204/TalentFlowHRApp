@@ -1,0 +1,378 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="/templates/mainLayout.xhtml">
+
+    <ui:define name="title">Gestión de Vacantes</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:breadCrumb>
+            <p:menuitem value="Home" url="/dashboard" />
+            <p:menuitem value="Vacantes" url="#" />
+        </p:breadCrumb>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h:form id="candidatoForm">
+                <div class="modern-table-container">
+                    <!-- Header de la tabla -->
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class="pi pi-users"></i>
+                            <h2>Gestión de Vacantes</h2>
+                        </div>
+
+                        <div class="table-actions">
+                            <!-- Botones de acción -->
+                            <div class="table-buttons">
+                                <p:commandButton value="Nueva Vacante" icon="pi pi-plus" styleClass="btn-new"
+                                                 actionListener="#{vacanteBean.prepareNewVacante}" oncomplete="PF('dlgNuevo').show()"
+                                                 update=":newForm" />
+                                <p:commandButton value="Exportar CSV" icon="pi pi-file-excel" styleClass="btn-new" style="margin-left: 0.5rem;">
+                                    <p:fileDownload value="#{vacanteBean.vacantesCSV}" />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de candidatos -->
+                    <p:dataTable id="vacantesTable" value="#{vacanteBean.vacantes}" var="item" paginator="true"
+                                 paginatorPosition="bottom" rows="10" widgetVar="vacantesTable"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                 rowsPerPageTemplate="10,20,30" emptyMessage="No se encontraron vacantes"
+                                 styleClass="modern-datatable" rowHover="true" reflow="true"
+                                 filteredValue="#{vacanteBean.filteredVacantes}">
+
+                        <!-- Columna de Título y Descripción -->
+                        <p:column headerText="Vacante" sortBy="#{item.titulo}" filterBy="#{item.titulo}"
+                                  filterMatchMode="contains">
+                            <div class="data-info">
+                                <div class="data-details">
+                                    <span class="data-title">#{item.titulo}</span>
+                                    <span class="data-subtitle">
+                                            <i class="pi pi-info-circle"></i>
+                                        #{item.descripcion}
+                                        </span>
+                                </div>
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Detalles -->
+                        <p:column headerText="Detalles">
+                            <div class="info-list">
+                                    <span class="info-item">
+                                        <i class="pi pi-map-marker"></i>
+                                        #{item.ubicacion}
+                                    </span>
+                                <span class="info-item">
+                                        <i class="pi pi-dollar"></i>
+                                    #{item.salario}
+                                    </span>
+                                <span class="info-item">
+                                        <i class="pi pi-file-edit"></i>
+                                    #{item.tipoContrato}
+                                    </span>
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Estado -->
+                        <p:column headerText="Estado" sortBy="#{item.activa}" styleClass="text-center">
+                            <div class="status-badge #{item.activa ? 'status-active' : 'status-inactive'}">
+                                <i class="pi #{item.activa ? 'pi-check-circle' : 'pi-times-circle'}"></i>
+                                #{item.activa ? 'Activa' : 'Inactiva'}
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Fechas -->
+                        <p:column headerText="Fechas">
+                            <div class="info-list">
+                                    <span class="info-item">
+                                        <i class="pi pi-calendar-plus"></i>
+                                        <h:outputText value="#{item.fechaCreacion}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
+                                    </span>
+                                <span class="info-item">
+                                        <i class="pi pi-calendar-minus"></i>
+                                        <h:outputText value="#{item.fechaCierre}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
+                                    </span>
+                            </div>
+                        </p:column>
+
+                        <!-- Columna de Acciones -->
+                        <p:column headerText="Acciones" styleClass="actions-column text-center">
+                            <div class="action-buttons">
+                                <p:commandButton icon="pi pi-eye" update=":viewForm" oncomplete="PF('dlgVer').show()"
+                                                 styleClass="btn-view" title="Ver detalles">
+                                    <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-pencil" update=":editForm"
+                                                 oncomplete="PF('dlgEditar').show()" styleClass="btn-edit" title="Editar candidato">
+                                    <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="pi pi-trash" styleClass="btn-delete"
+                                                 oncomplete="PF('confirmDelete').show()" title="Eliminar candidato">
+                                    <f:setPropertyActionListener value="#{item}" target="#{candidatoBean.candidato}" />
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+
+                        <!-- Personalización del paginador -->
+                        <f:facet name="paginatorLeft">
+                            <p:commandButton type="button" icon="pi pi-refresh" styleClass="ui-button-text" />
+                        </f:facet>
+
+                        <f:facet name="paginatorRight">
+                            <p:commandButton type="button" icon="pi pi-cloud-download" styleClass="ui-button-text" />
+                        </f:facet>
+                    </p:dataTable>
+                </div>
+            </h:form>
+
+            <!-- Diálogos para acciones -->
+            <p:dialog widgetVar="dlgNuevo" header="✨ Nueva Vacante" modal="true" width="700" showEffect="fade"
+                      styleClass="modern-dialog" resizable="false">
+                <h:form id="newForm" styleClass="modern-form">
+                    <div class="form-container">
+                        <!-- Información Principal -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-info-circle"></i>
+                                Información de la Vacante
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="titulo" value="Título *" styleClass="form-label" />
+                                    <p:inputText id="titulo" value="#{vacanteBean.vacante.titulo}" required="true"
+                                                 requiredMessage="Campo requerido" placeholder="Ingrese el título de la vacante"
+                                                 styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="descripcion" value="Descripción" styleClass="form-label" />
+                                    <p:inputTextarea id="descripcion" value="#{vacanteBean.vacante.descripcion}"
+                                                     placeholder="Descripción de la vacante" styleClass="modern-input" rows="3" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Requisitos y Ubicación -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-list"></i>
+                                Requisitos y Ubicación
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="requisitos" value="Requisitos" styleClass="form-label" />
+                                    <p:inputTextarea id="requisitos" value="#{vacanteBean.vacante.requisitos}"
+                                                     placeholder="Requisitos del puesto" styleClass="modern-input" rows="2" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="ubicacion" value="Ubicación" styleClass="form-label" />
+                                    <p:inputText id="ubicacion" value="#{vacanteBean.vacante.ubicacion}"
+                                                 placeholder="Ciudad o país" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Salario y Tipo de Contrato -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-dollar"></i>
+                                Salario y Contrato
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="salario" value="Salario" styleClass="form-label" />
+                                    <p:inputText id="salario" value="#{vacanteBean.vacante.salario}"
+                                                 placeholder="Ejemplo: $1000 - $2000" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="tipoContrato" value="Tipo de Contrato" styleClass="form-label" />
+                                    <p:inputText id="tipoContrato" value="#{vacanteBean.vacante.tipoContrato}"
+                                                 placeholder="Ejemplo: Tiempo completo, Freelance" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Estado y Fechas -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-calendar"></i>
+                                Estado y Fechas
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="activa" value="Activa" styleClass="form-label" />
+                                    <p:selectBooleanCheckbox id="activa" value="#{vacanteBean.vacante.activa}" styleClass="modern-checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="fechaCierre" value="Fecha de Cierre" styleClass="form-label" />
+                                    <p:calendar id="fechaCierre" value="#{vacanteBean.vacante.fechaCierre}" pattern="dd/MM/yyyy" showIcon="true" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Botones de acción -->
+                        <div class="form-actions">
+                            <p:commandButton value="Cancelar" onclick="PF('dlgNuevo').hide(); return false;"
+                                             styleClass="btn-cancel" icon="pi pi-times" />
+                            <p:commandButton value="Guardar Vacante" action="#{vacanteBean.saveVacante}"
+                                             update=":candidatoForm" oncomplete="PF('dlgNuevo').hide()" styleClass="btn-save"
+                                             icon="pi pi-check" />
+                        </div>
+                    </div>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog widgetVar="dlgEditar" header="✏️ Editar Vacante" modal="true" width="700" showEffect="fade"
+                      styleClass="modern-dialog" resizable="false">
+                <h:form id="editForm" styleClass="modern-form">
+                    <div class="form-container">
+                        <!-- Información Principal -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-info-circle"></i>
+                                Información de la Vacante
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="tituloEdit" value="Título *" styleClass="form-label" />
+                                    <p:inputText id="tituloEdit" value="#{vacanteBean.vacante.titulo}" required="true"
+                                                 requiredMessage="Campo requerido" placeholder="Ingrese el título de la vacante"
+                                                 styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="descripcionEdit" value="Descripción" styleClass="form-label" />
+                                    <p:inputTextarea id="descripcionEdit" value="#{vacanteBean.vacante.descripcion}"
+                                                     placeholder="Descripción de la vacante" styleClass="modern-input" rows="3" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Requisitos y Ubicación -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-list"></i>
+                                Requisitos y Ubicación
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="requisitosEdit" value="Requisitos" styleClass="form-label" />
+                                    <p:inputTextarea id="requisitosEdit" value="#{vacanteBean.vacante.requisitos}"
+                                                     placeholder="Requisitos del puesto" styleClass="modern-input" rows="2" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="ubicacionEdit" value="Ubicación" styleClass="form-label" />
+                                    <p:inputText id="ubicacionEdit" value="#{vacanteBean.vacante.ubicacion}"
+                                                 placeholder="Ciudad o país" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Salario y Tipo de Contrato -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-dollar"></i>
+                                Salario y Contrato
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="salarioEdit" value="Salario" styleClass="form-label" />
+                                    <p:inputText id="salarioEdit" value="#{vacanteBean.vacante.salario}"
+                                                 placeholder="Ejemplo: S/.1000 - S/.2000" styleClass="modern-input" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="tipoContratoEdit" value="Tipo de Contrato" styleClass="form-label" />
+                                    <p:inputText id="tipoContratoEdit" value="#{vacanteBean.vacante.tipoContrato}"
+                                                 placeholder="Ejemplo: Tiempo completo, Freelance" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Estado y Fechas -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="pi pi-calendar"></i>
+                                Estado y Fechas
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <p:outputLabel for="activaEdit" value="Activa" styleClass="form-label" />
+                                    <p:selectBooleanCheckbox id="activaEdit" value="#{vacanteBean.vacante.activa}" styleClass="modern-checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel for="fechaCierreEdit" value="Fecha de Cierre" styleClass="form-label" />
+                                    <p:calendar id="fechaCierreEdit" value="#{vacanteBean.vacante.fechaCierre}" pattern="dd/MM/yyyy" showIcon="true" styleClass="modern-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Botones de acción -->
+                        <div class="form-actions">
+                            <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide(); return false;"
+                                             styleClass="btn-cancel" icon="pi pi-times" />
+                            <p:commandButton value="Actualizar Vacante" action="#{vacanteBean.saveVacante}"
+                                             update=":candidatoForm" oncomplete="PF('dlgEditar').hide()" styleClass="btn-save"
+                                             icon="pi pi-check" />
+                        </div>
+                    </div>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog widgetVar="dlgVer" header="Detalles de la Vacante" modal="true" width="500" showEffect="fade">
+                <h:form id="viewForm">
+                    <div class="p-field p-grid">
+                        <div class="p-col-12">
+                            <p:outputLabel value="Título:" />
+                            <h:outputText value="#{vacanteBean.vacante.titulo}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Descripción:" />
+                            <h:outputText value="#{vacanteBean.vacante.descripcion}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Requisitos:" />
+                            <h:outputText value="#{vacanteBean.vacante.requisitos}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Ubicación:" />
+                            <h:outputText value="#{vacanteBean.vacante.ubicacion}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Salario:" />
+                            <h:outputText value="#{vacanteBean.vacante.salario}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Tipo de Contrato:" />
+                            <h:outputText value="#{vacanteBean.vacante.tipoContrato}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Activa:" />
+                            <h:outputText value="#{vacanteBean.vacante.activa ? 'Sí' : 'No'}" />
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Fecha de Creación:" />
+                            <h:outputText value="#{vacanteBean.vacante.fechaCreacion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </div>
+                        <div class="p-col-12">
+                            <p:outputLabel value="Fecha de Cierre:" />
+                            <h:outputText value="#{vacanteBean.vacante.fechaCierre}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </div>
+                    </div>
+                </h:form>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="confirmDelete" message="¿Está seguro que desea eliminar esta vacante?"
+                             header="Confirmación" severity="warn">
+                <div class="p-d-flex p-jc-end">
+                    <p:commandButton value="No" onclick="PF('confirmDelete').hide()" styleClass="ui-button-secondary" />
+                    <p:commandButton value="Sí" action="#{vacanteBean.deleteVacante}" update=":candidatoForm"
+                                     oncomplete="PF('confirmDelete').hide()" styleClass="ui-button-danger" />
+                </div>
+            </p:confirmDialog>
+        </div>
+    </ui:define>
+</ui:composition>

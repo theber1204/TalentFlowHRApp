@@ -10,6 +10,16 @@
                   <i class="pi pi-home"></i>
                </h:link>
             </li>
+            <li class="sidebar-item #{view.viewId == '/pages/vacantes/vacantes.xhtml' ? 'active' : ''}">
+               <h:link outcome="vacantes" value="Vacantes" styleClass="nav-link">
+                  <i class="pi pi-briefcase"></i>
+               </h:link>
+            </li>
+            <li class="sidebar-item #{view.viewId == '/pages/postulantes/postulantes.xhtml' ? 'active' : ''}">
+               <h:link outcome="postulantes" value="Postulantes" styleClass="nav-link">
+                    <i class="pi pi-users"></i>
+               </h:link>
+            </li>
             <li class="sidebar-item #{view.viewId == '/pages/candidatos/candidatos.xhtml' ? 'active' : ''}">
                <h:link outcome="candidatos" value="Candidatos" styleClass="nav-link">
                   <i class="pi pi-users"></i>

@@ -43,13 +43,28 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>vacantes</from-outcome>
+            <to-view-id>/pages/vacantes/vacantes.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>candidatos</from-outcome>
             <to-view-id>/pages/candidatos/candidatos.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>postulantes</from-outcome>
+            <to-view-id>/pages/postulantes/postulantes.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>procesoPostulacion</from-outcome>
             <to-view-id>/pages/procesos/procesoPostulacion.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>vacantes1</from-outcome>
+            <to-view-id>/pages/vacantes/vacantes1.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

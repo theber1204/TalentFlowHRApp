@@ -56,6 +56,31 @@ public class ExportService {
         }
     }
 
+    public StreamedContent exportarCSVGenerico(List<String> headers, List<List<String>> rows, String fileName) {
+        try {
+            File tempFile = File.createTempFile(fileName, ".csv");
+            tempFile.deleteOnExit();
+
+            try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"))) {
+                // Escribir encabezados
+                writer.println(String.join(",", headers));
+                // Escribir filas
+                for (List<String> row : rows) {
+                    writer.println(String.join(",", row.stream().map(this::escaparCSV).toArray(String[]::new)));
+                }
+            }
+            InputStream stream = new FileInputStream(tempFile);
+            return DefaultStreamedContent.builder()
+                    .name(fileName + ".csv")
+                    .contentType("text/csv")
+                    .stream(() -> stream)
+                    .build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private String escaparCSV(String valor) {
         if (valor == null) {
             return "";

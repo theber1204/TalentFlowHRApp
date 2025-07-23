@@ -14,23 +14,29 @@
         <div class="cards-container">
             <div class="dashboard-card">
                 <h5 class="card-title">Vacantes Activas</h5>
-                <div class="card-value primary">12</div>
+                <div class="card-value primary">
+                    #{vacanteBean.vacantes != null ? vacanteBean.vacantes.stream().filter(v -> v.activa).count() : 0}
+                </div>
                 <p class="card-text">Vacantes publicadas actualmente.</p>
                 <a href="#{request.contextPath}/vacantes" class="btn btn-outline">Ver detalles</a>
             </div>
 
             <div class="dashboard-card">
                 <h5 class="card-title">Candidatos Nuevos</h5>
-                <div class="card-value success">8</div>
+                <div class="card-value success">
+                    #{candidatoBean.candidatos != null ? candidatoBean.candidatos.size() : 0}
+                </div>
                 <p class="card-text">Candidatos registrados esta semana.</p>
                 <a href="#{request.contextPath}/candidatos" class="btn btn-outline">Ver detalles</a>
             </div>
 
             <div class="dashboard-card">
-                <h5 class="card-title">Entrevistas Pendientes</h5>
-                <div class="card-value warning">5</div>
-                <p class="card-text">Entrevistas programadas para hoy.</p>
-                <a href="#" class="btn btn-outline">Ver calendario</a>
+                <h5 class="card-title">Postulantes</h5>
+                <div class="card-value warning">
+                    #{postulanteBean.postulantes != null ? postulanteBean.postulantes.size() : 0}
+                </div>
+                <p class="card-text">Total de postulantes registrados.</p>
+                <a href="#{request.contextPath}/postulantes" class="btn btn-outline">Ver detalles</a>
             </div>
         </div>
     </ui:define>
